@@ -20,11 +20,11 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
+        '4e8671d7be9056dcd04ddd9e8e15f9cc' => __DIR__ . '/..' . '/encore/laravel-admin/src/helpers.php',
         '9cdd7b9056abc3081735233ba9dd9c7f' => __DIR__ . '/..' . '/facade/flare-client-php/src/helpers.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         'b6ec61354e97f32c0ae683041c78392a' => __DIR__ . '/..' . '/scrivo/highlight.php/HighlightUtilities/functions.php',
-        '4e8671d7be9056dcd04ddd9e8e15f9cc' => __DIR__ . '/..' . '/encore/laravel-admin/src/helpers.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
     );
 
@@ -74,6 +74,7 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
             'Symfony\\Component\\Debug\\' => 24,
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
+            'ShareManT\\EditorMd\\' => 19,
             'Seld\\PharUtils\\' => 15,
             'Seld\\JsonLint\\' => 14,
         ),
@@ -129,6 +130,7 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
         ),
         'E' => 
         array (
+            'Encore\\Simplemde\\' => 17,
             'Encore\\Admin\\' => 13,
             'Egulias\\EmailValidator\\' => 23,
         ),
@@ -290,6 +292,10 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
         array (
             0 => __DIR__ . '/..' . '/symfony/console',
         ),
+        'ShareManT\\EditorMd\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sharemant/laravel-admin-ext-editormd/src',
+        ),
         'Seld\\PharUtils\\' => 
         array (
             0 => __DIR__ . '/..' . '/seld/phar-utils/src',
@@ -389,6 +395,10 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
         'Facade\\FlareClient\\' => 
         array (
             0 => __DIR__ . '/..' . '/facade/flare-client-php/src',
+        ),
+        'Encore\\Simplemde\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/laravel-admin-ext/simplemde/src',
         ),
         'Encore\\Admin\\' => 
         array (
@@ -497,6 +507,7 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
     );
 
     public static $classMap = array (
+        'App\\Admin\\Controllers\\ArticleController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ArticleController.php',
         'App\\Admin\\Controllers\\AuthController' => __DIR__ . '/../..' . '/app/Admin/Controllers/AuthController.php',
         'App\\Admin\\Controllers\\ExampleController' => __DIR__ . '/../..' . '/app/Admin/Controllers/ExampleController.php',
         'App\\Admin\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Admin/Controllers/HomeController.php',
@@ -517,11 +528,14 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Models\\Article' => __DIR__ . '/../..' . '/app/Models/Article.php',
+        'App\\Models\\Branch' => __DIR__ . '/../..' . '/app/Models/Branch.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',
         'App\\Providers\\EventServiceProvider' => __DIR__ . '/../..' . '/app/Providers/EventServiceProvider.php',
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
+        'App\\Services\\OtherService' => __DIR__ . '/../..' . '/app/Services/OtherService.php',
         'App\\User' => __DIR__ . '/../..' . '/app/User.php',
         'Barryvdh\\LaravelIdeHelper\\Alias' => __DIR__ . '/..' . '/barryvdh/laravel-ide-helper/src/Alias.php',
         'Barryvdh\\LaravelIdeHelper\\Console\\EloquentCommand' => __DIR__ . '/..' . '/barryvdh/laravel-ide-helper/src/Console/EloquentCommand.php',
@@ -1628,6 +1642,9 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
         'Encore\\Admin\\Widgets\\Tab' => __DIR__ . '/..' . '/encore/laravel-admin/src/Widgets/Tab.php',
         'Encore\\Admin\\Widgets\\Table' => __DIR__ . '/..' . '/encore/laravel-admin/src/Widgets/Table.php',
         'Encore\\Admin\\Widgets\\Widget' => __DIR__ . '/..' . '/encore/laravel-admin/src/Widgets/Widget.php',
+        'Encore\\Simplemde\\Editor' => __DIR__ . '/..' . '/laravel-admin-ext/simplemde/src/Editor.php',
+        'Encore\\Simplemde\\Simplemde' => __DIR__ . '/..' . '/laravel-admin-ext/simplemde/src/Simplemde.php',
+        'Encore\\Simplemde\\SimplemdeServiceProvider' => __DIR__ . '/..' . '/laravel-admin-ext/simplemde/src/SimplemdeServiceProvider.php',
         'Facade\\FlareClient\\Api' => __DIR__ . '/..' . '/facade/flare-client-php/src/Api.php',
         'Facade\\FlareClient\\Concerns\\HasContext' => __DIR__ . '/..' . '/facade/flare-client-php/src/Concerns/HasContext.php',
         'Facade\\FlareClient\\Concerns\\UsesTime' => __DIR__ . '/..' . '/facade/flare-client-php/src/Concerns/UsesTime.php',
@@ -4722,6 +4739,9 @@ class ComposerStaticInit9d2f5307e3d778601a10a20c1be5098c
         'Seld\\JsonLint\\Undefined' => __DIR__ . '/..' . '/seld/jsonlint/src/Seld/JsonLint/Undefined.php',
         'Seld\\PharUtils\\Linter' => __DIR__ . '/..' . '/seld/phar-utils/src/Linter.php',
         'Seld\\PharUtils\\Timestamps' => __DIR__ . '/..' . '/seld/phar-utils/src/Timestamps.php',
+        'ShareManT\\EditorMd\\Editor' => __DIR__ . '/..' . '/sharemant/laravel-admin-ext-editormd/src/Editor.php',
+        'ShareManT\\EditorMd\\EditorMd' => __DIR__ . '/..' . '/sharemant/laravel-admin-ext-editormd/src/EditorMd.php',
+        'ShareManT\\EditorMd\\EditorMdServiceProvider' => __DIR__ . '/..' . '/sharemant/laravel-admin-ext-editormd/src/EditorMdServiceProvider.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
         'Symfony\\Component\\Console\\Application' => __DIR__ . '/..' . '/symfony/console/Application.php',
         'Symfony\\Component\\Console\\CommandLoader\\CommandLoaderInterface' => __DIR__ . '/..' . '/symfony/console/CommandLoader/CommandLoaderInterface.php',
