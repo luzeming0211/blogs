@@ -102,6 +102,7 @@
       <path value="$PROJECT_DIR$/vendor/symfony/filesystem" />
       <path value="$PROJECT_DIR$/vendor/laravel-admin-ext/simplemde" />
       <path value="$PROJECT_DIR$/vendor/sharemant/laravel-admin-ext-editormd" />
+      <path value="$PROJECT_DIR$/vendor/erusev/parsedown" />
     </include_path>
   </component>
   <component name="PhpUnit">

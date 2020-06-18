@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\OtherService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Parsedown;
 
 class Article extends Model
 {
@@ -13,14 +14,19 @@ class Article extends Model
     protected $dates = ['deleted_at'];
 
 
-    public static function getBranchNameIDs($sBranch)
+    protected function getArticle()
     {
-        $aBranch = explode(',', $sBranch);
-        $aBranchName = [];
-        $aBranchAll = OtherService::$aBranch;
-        foreach ($aBranch as $key => $val) {
-            $aBranchName[$key] = $aBranchAll[$val];
+        return $this->orderBy('id')->simplePaginate(15);;
+    }
+
+    protected function getArticleId($id)
+    {
+
+        $aArticle =  $this->where('id',$id)->first();
+        if (!empty($aArticle)){
+            $Parsedown = new Parsedown();
+            $aArticle->content = $Parsedown->text($aArticle->content);
         }
-        return $aBranchName;
+        return $aArticle;
     }
 }

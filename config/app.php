@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        App\Providers\ComposerServiceProvider::class,
 
     ],
 

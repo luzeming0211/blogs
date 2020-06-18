@@ -99,6 +99,7 @@ class UserController extends AdminController
             ->updateRules(['required', "unique:{$connection}.{$userTable},username,{{id}}"]);
 
         $form->text('name', trans('admin.name'))->rules('required');
+        $form->icon('icon',  __('icon'));
         $form->image('avatar', trans('admin.avatar'));
         $form->password('password', trans('admin.password'))->rules('required|confirmed');
         $form->password('password_confirmation', trans('admin.password_confirmation'))->rules('required')

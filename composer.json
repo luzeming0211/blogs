@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "encore/laravel-admin": "^1.8",
+        "erusev/parsedown": "^1.7",
         "fideloper/proxy": "^4.0",
         "laravel-admin-ext/simplemde": "^1.0",
         "laravel/framework": "^6.2",
