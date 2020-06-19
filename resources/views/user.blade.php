@@ -9,13 +9,13 @@
                class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
                 <i class="icon icon-lg icon-navicon"></i>
             </a>
-            <div class="flex-col header-title ellipsis">你好帅啊</div>
+            <div class="flex-col header-title ellipsis">{{ $aArticle->admin_user->username }}</div>
         </div>
     </header>
 
     <header class="content-header index-header">
         <div class="container fade-scale">
-            <h1 class="title">你好帅啊</h1>
+            <h1 class="title">{{ $aArticle->admin_user->username }}</h1>
             <h5 class="subtitle">
             </h5>
         </div>
@@ -23,7 +23,7 @@
 
     <div class="container body-wrap">
         <ul class="post-list">
-            @if($aArticle)
+            @if(!$aArticle->isEmpty())
             @foreach($aArticle as $key => $val)
                 <li class="post-list-item fade">
                     <article id="post-Windows-V2RayN"

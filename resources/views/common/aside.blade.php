@@ -20,9 +20,14 @@
         </div>
         <div class="scroll-wrap flex-col">
             <ul class="nav">
+                <li class="waves-block waves-effect active">
+                    <a href="/">
+                        首页
+                    </a>
+                </li>
                 @foreach($admin_user as $key => $val)
                     <li class="waves-block waves-effect active">
-                        <a href="/">
+                        <a href="/user/{{ $val->id }}">
                             {{ $val->username }}
                         </a>
                     </li>

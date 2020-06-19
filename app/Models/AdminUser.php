@@ -15,4 +15,15 @@ class AdminUser extends Model
     {
         return self::where('id', '>', 0)->get();
     }
+
+//    public function articles()
+//    {
+//        return $this->hasMany('App\Models\Article','userid','id');
+//    }
+
+    public static function getAdminUserInfo($id)
+    {
+        return self::select('username','name','avatar','icon')->where('id',$id)->first();
+    }
+
 }

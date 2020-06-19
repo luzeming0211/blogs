@@ -14,6 +14,10 @@ class Article extends Model
     protected $table = 'articles';
     protected $dates = ['deleted_at'];
 
+    public function adminUser()
+    {
+        return $this->hasOne('App\Models\AdminUser','userid','id');
+    }
 
     protected function getArticle()
     {
@@ -32,4 +36,20 @@ class Article extends Model
         $content_html = $Parsedown->text($content);
         return $this->where('id', $id)->update(['content_html' => $content_html]);
     }
+
+//    protected function getUserArticle($userid)
+//    {
+//        return AdminUser::find($userid)->articles;
+//    }
+
+    protected function getUserArticle($userid)
+    {
+        $aArticle =  $this->where('userid',$userid)->orderBy('id')->simplePaginate(15);
+        $aArticle->admin_user = AdminUser::getAdminUserInfo($userid);
+        return $aArticle;
+    }
+
+
+
+
 }

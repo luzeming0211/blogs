@@ -12,18 +12,20 @@ class ArticleController extends Controller
     {
         $aArticle = Article::getArticle();
 
-        return view('index',compact('aArticle'));
+        return view('index', compact('aArticle'));
     }
 
     public function detail($id)
     {
         $aArticle = Article::getArticleId($id);
-        if (empty($aArticle)){
-            abort(404);
-        }
-        return view('article',compact('aArticle'));
+        return view('article', compact('aArticle'));
     }
 
+    public function user($userid)
+    {
+        $aArticle = Article::getUserArticle($userid);
+        return view('user', compact('aArticle'));
+    }
 
 
 }

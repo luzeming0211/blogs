@@ -62,6 +62,13 @@ if (!function_exists('sg')) {
     }
 }
 
+if (!function_exists('sg2')) {
+    function sg2(&$val, $defVal = NULL)
+    {
+        return isset($val) ? $defVal : $val;
+    }
+}
+
 if (!function_exists('getsize')) {
     function getsize($size, $format = 'kb')
     {

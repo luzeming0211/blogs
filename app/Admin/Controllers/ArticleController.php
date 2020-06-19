@@ -26,7 +26,7 @@ class ArticleController extends AdminController
     protected function grid()
     {
         $grid = new Grid(new Article);
-
+        $grid->model()->where('userid', Admin::user()->id);
         $grid->column('id', __('ID'))->sortable();
         $grid->column('title', __('标题'));
         $grid->column('created_at', __('Created at'));

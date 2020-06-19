@@ -21,9 +21,8 @@
         </p>
     </div>
     <div class="bottom">
-        <p><span>神奇海螺 &copy; 2019 - 2020</span>
+        <p><span>基克纳明 &copy; 2019 - 2020</span> <strong>冀ICP备18032177号-1	<a href="http://www.beian.miit.gov.cn/" target="_blank">工信部</a></strong> <br>
             <span>
-
                 Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a
                     href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
             </span>
