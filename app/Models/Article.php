@@ -10,23 +10,26 @@ use Parsedown;
 class Article extends Model
 {
     use SoftDeletes;
+
     protected $table = 'articles';
     protected $dates = ['deleted_at'];
 
 
     protected function getArticle()
     {
-        return $this->orderBy('id')->simplePaginate(15);;
+        return $this->orderBy('id')->simplePaginate(15);
     }
 
     protected function getArticleId($id)
     {
-
-        $aArticle =  $this->where('id',$id)->first();
-        if (!empty($aArticle)){
-            $Parsedown = new Parsedown();
-            $aArticle->content = $Parsedown->text($aArticle->content);
-        }
+        $aArticle = $this->where('id', $id)->first();
         return $aArticle;
+    }
+
+    protected function upContentHtml($id, $content)
+    {
+        $Parsedown = new Parsedown();
+        $content_html = $Parsedown->text($content);
+        return $this->where('id', $id)->update(['content_html' => $content_html]);
     }
 }

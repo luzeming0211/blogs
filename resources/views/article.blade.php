@@ -25,25 +25,12 @@
 
     <div class="container body-wrap">
         <article id="article" class="post-article article-type-post fade hljs" itemprop="blogPost">
-            {!! $aArticle->content !!}
+            {!! $aArticle->content_html !!}
         </article>
     </div>
 @endsection
 @section('js_ext')
-    {{--        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>--}}
-    {{--        <script>--}}
-    {{--            document.getElementById('article').innerHTML =--}}
-    {{--                marked({{ $aArticle->content }});--}}
-    {{--        </script>--}}
-{{--    <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>--}}
-{{--    <script>--}}
-{{--        var converter = new showdown.Converter();--}}
-{{--        text = document.getElementById('md_content').value;--}}
-{{--        console.log(text);--}}
-{{--        html = converter.makeHtml(text);--}}
-{{--        document.getElementById('article').innerHTML = html;--}}
 
-{{--    </script>--}}
 @endsection
 
 

@@ -43,6 +43,11 @@ class ArticleController extends AdminController
         $form->hidden('userid')->default(Admin::user()->id);
         $form->editormd('content', __('内容'));
 
+        $form->saved(function (Form $form) {
+            $id = $form->model()->id;
+            $content = $form->model()->content;
+            Article::upContentHtml($id, $content);
+        });
         return $form;
     }
 }

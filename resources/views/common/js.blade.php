@@ -5,7 +5,7 @@
 </script>
 <script src="{{asset('assets/article')}}/js/main.min.js"></script>
 <script async src="{{asset('assets/article')}}/js/busuanzi.pure.mini.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js"></script>
+<script  src="{{asset('assets/article')}}/js/highlight.min.js"></script>
 <script>
     hljs.initHighlightingOnLoad();
 </script>
