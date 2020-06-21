@@ -1,5 +1,87 @@
 [
     {
+        "name": "barryvdh/laravel-debugbar",
+        "version": "v3.3.3",
+        "version_normalized": "3.3.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/barryvdh/laravel-debugbar.git",
+            "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/57f2219f6d9efe41ed1bc880d86701c52f261bf5",
+            "reference": "57f2219f6d9efe41ed1bc880d86701c52f261bf5",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "illuminate/routing": "^5.5|^6|^7",
+            "illuminate/session": "^5.5|^6|^7",
+            "illuminate/support": "^5.5|^6|^7",
+            "maximebf/debugbar": "^1.15.1",
+            "php": ">=7.0",
+            "symfony/debug": "^3|^4|^5",
+            "symfony/finder": "^3|^4|^5"
+        },
+        "require-dev": {
+            "laravel/framework": "5.5.x"
+        },
+        "time": "2020-05-05T10:53:32+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.2-dev"
+            },
+            "laravel": {
+                "providers": [
+                    "Barryvdh\\Debugbar\\ServiceProvider"
+                ],
+                "aliases": {
+                    "Debugbar": "Barryvdh\\Debugbar\\Facade"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Barryvdh\\Debugbar\\": "src/"
+            },
+            "files": [
+                "src/helpers.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Barry vd. Heuvel",
+                "email": "barryvdh@gmail.com"
+            }
+        ],
+        "description": "PHP Debugbar integration for Laravel",
+        "keywords": [
+            "debug",
+            "debugbar",
+            "laravel",
+            "profiler",
+            "webprofiler"
+        ],
+        "funding": [
+            {
+                "url": "https://github.com/barryvdh",
+                "type": "github"
+            }
+        ]
+    },
+    {
         "name": "barryvdh/laravel-ide-helper",
         "version": "v2.7.0",
         "version_normalized": "2.7.0.0",
@@ -2504,6 +2586,147 @@
                 "url": "https://offset.earth/frankdejonge",
                 "type": "other"
             }
+        ]
+    },
+    {
+        "name": "league/fractal",
+        "version": "0.19.2",
+        "version_normalized": "0.19.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/thephpleague/fractal.git",
+            "reference": "06dc15f6ba38f2dde2f919d3095d13b571190a7c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/thephpleague/fractal/zipball/06dc15f6ba38f2dde2f919d3095d13b571190a7c",
+            "reference": "06dc15f6ba38f2dde2f919d3095d13b571190a7c",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": ">=5.4"
+        },
+        "require-dev": {
+            "doctrine/orm": "^2.5",
+            "illuminate/contracts": "~5.0",
+            "mockery/mockery": "~0.9",
+            "pagerfanta/pagerfanta": "~1.0.0",
+            "phpunit/phpunit": "^4.8.35 || ^7.5",
+            "squizlabs/php_codesniffer": "~1.5|~2.0|~3.4",
+            "zendframework/zend-paginator": "~2.3"
+        },
+        "suggest": {
+            "illuminate/pagination": "The Illuminate Pagination component.",
+            "pagerfanta/pagerfanta": "Pagerfanta Paginator",
+            "zendframework/zend-paginator": "Zend Framework Paginator"
+        },
+        "time": "2020-01-24T23:17:29+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "0.13-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "League\\Fractal\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Phil Sturgeon",
+                "email": "me@philsturgeon.uk",
+                "homepage": "http://philsturgeon.uk/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Handle the output of complex data structures ready for API output.",
+        "homepage": "http://fractal.thephpleague.com/",
+        "keywords": [
+            "api",
+            "json",
+            "league",
+            "rest"
+        ]
+    },
+    {
+        "name": "maximebf/debugbar",
+        "version": "v1.16.3",
+        "version_normalized": "1.16.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/maximebf/php-debugbar.git",
+            "reference": "1a1605b8e9bacb34cc0c6278206d699772e1d372"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/maximebf/php-debugbar/zipball/1a1605b8e9bacb34cc0c6278206d699772e1d372",
+            "reference": "1a1605b8e9bacb34cc0c6278206d699772e1d372",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "php": "^7.1",
+            "psr/log": "^1.0",
+            "symfony/var-dumper": "^2.6|^3|^4|^5"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^5"
+        },
+        "suggest": {
+            "kriswallsmith/assetic": "The best way to manage assets",
+            "monolog/monolog": "Log using Monolog",
+            "predis/predis": "Redis storage"
+        },
+        "time": "2020-05-06T07:06:27+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.16-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "DebugBar\\": "src/DebugBar/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Maxime Bouroumeau-Fuseau",
+                "email": "maxime.bouroumeau@gmail.com",
+                "homepage": "http://maximebf.com"
+            },
+            {
+                "name": "Barry vd. Heuvel",
+                "email": "barryvdh@gmail.com"
+            }
+        ],
+        "description": "Debug bar in the browser for php application",
+        "homepage": "https://github.com/maximebf/php-debugbar",
+        "keywords": [
+            "debug",
+            "debugbar"
         ]
     },
     {
@@ -5223,6 +5446,147 @@
         "keywords": [
             "extension",
             "laravel-admin"
+        ]
+    },
+    {
+        "name": "spatie/fractalistic",
+        "version": "2.9.0",
+        "version_normalized": "2.9.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/spatie/fractalistic.git",
+            "reference": "9d7594c4e9ed2657eb017db93ab6dbb58f56e049"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/spatie/fractalistic/zipball/9d7594c4e9ed2657eb017db93ab6dbb58f56e049",
+            "reference": "9d7594c4e9ed2657eb017db93ab6dbb58f56e049",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "league/fractal": "^0.19.0",
+            "php": "^7.0"
+        },
+        "require-dev": {
+            "illuminate/pagination": "~5.3.0|~5.4.0",
+            "phpunit/phpunit": "^5.7.21"
+        },
+        "time": "2020-01-31T11:54:45+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Spatie\\Fractalistic\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Freek Van der Herten",
+                "email": "freek@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }
+        ],
+        "description": "A developer friendly wrapper around Fractal",
+        "homepage": "https://github.com/spatie/fractalistic",
+        "keywords": [
+            "api",
+            "fractal",
+            "fractalistic",
+            "spatie",
+            "transform"
+        ]
+    },
+    {
+        "name": "spatie/laravel-fractal",
+        "version": "5.7.0",
+        "version_normalized": "5.7.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/spatie/laravel-fractal.git",
+            "reference": "482b73a7942d14087167b32c6681351c81afaeb3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/spatie/laravel-fractal/zipball/482b73a7942d14087167b32c6681351c81afaeb3",
+            "reference": "482b73a7942d14087167b32c6681351c81afaeb3",
+            "shasum": "",
+            "mirrors": [
+                {
+                    "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                    "preferred": true
+                }
+            ]
+        },
+        "require": {
+            "illuminate/contracts": "~5.8.0|^6.0|^7.0",
+            "illuminate/support": "~5.8.0|^6.0|^7.0",
+            "php": "^7.2",
+            "spatie/fractalistic": "^2.5"
+        },
+        "require-dev": {
+            "dms/phpunit-arraysubset-asserts": "^0.1.0",
+            "orchestra/testbench": "~3.8.0|^4.0|^5.0"
+        },
+        "time": "2020-03-02T18:40:49+00:00",
+        "type": "library",
+        "extra": {
+            "laravel": {
+                "providers": [
+                    "Spatie\\Fractal\\FractalServiceProvider"
+                ],
+                "aliases": {
+                    "Fractal": "Spatie\\Fractal\\FractalFacade"
+                }
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Spatie\\Fractal\\": "src"
+            },
+            "files": [
+                "src/helpers.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Freek Van der Herten",
+                "email": "freek@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }
+        ],
+        "description": "An easy to use Fractal integration for Laravel applications",
+        "homepage": "https://github.com/spatie/laravel-fractal",
+        "keywords": [
+            "api",
+            "fractal",
+            "laravel",
+            "laravel-fractal",
+            "lumen",
+            "spatie",
+            "transform"
+        ],
+        "funding": [
+            {
+                "url": "https://spatie.be/open-source/support-us",
+                "type": "custom"
+            }
         ]
     },
     {

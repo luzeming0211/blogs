@@ -27,5 +27,9 @@ class ArticleController extends Controller
         return view('user', compact('aArticle'));
     }
 
+    public function article($userid)
+    {
+
+    }
 
 }

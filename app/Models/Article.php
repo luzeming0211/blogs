@@ -21,7 +21,7 @@ class Article extends Model
 
     protected function getArticle()
     {
-        return $this->orderBy('id')->simplePaginate(15);
+        return $this->orderBy('id','desc')->simplePaginate(15);
     }
 
     protected function getArticleId($id)
