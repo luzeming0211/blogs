@@ -33,8 +33,8 @@ class NesController extends AdminController
         $form->text('name', __('游戏名'))->rules('required');
         $form->image('pic', __('图片'))->rules('required');
         $form->file('game', __('nes上传'))->rules('required');
-        $form->display('created_at', __('Created At'));
-        $form->display('updated_at', __('Updated At'));
+//        $form->display('created_at', __('Created At'));
+//        $form->display('updated_at', __('Updated At'));
 
         return $form;
     }

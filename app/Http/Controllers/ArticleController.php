@@ -27,9 +27,13 @@ class ArticleController extends Controller
         return view('user', compact('aArticle'));
     }
 
-    public function article($userid)
+    public function article()
     {
-
+        $aArticle =  Article::getArticleAll();
+//        foreach ($aArticle as $key => $val){
+//            ld($val->content);
+//            Article::upContentHtml($val->id, $val->content);
+//        }
     }
 
 }

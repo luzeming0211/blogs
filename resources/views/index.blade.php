@@ -39,12 +39,12 @@
                         </div>
 
                         <h3 class="post-title" itemprop="name">
-                            <a class="post-title-link" href="/{{ $val->id }}">{{ $val->title }}</a>
+                            <a class="post-title-link" href="/article/{{ $val->id }}">{{ $val->title }}</a>
                         </h3>
 
                         <div class="post-content" id="post-content" itemprop="postContent">
                             {{ $val->title }}
-                            <a href="/{{ $val->id }}" class="post-more waves-effect waves-button">
+                            <a href="/article/{{ $val->id }}" class="post-more waves-effect waves-button">
                                 Continue reading...
                             </a>
                         </div>

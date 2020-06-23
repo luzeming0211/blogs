@@ -49,6 +49,10 @@ class Article extends Model
         return $aArticle;
     }
 
+    protected function getArticleAll()
+    {
+        return  $this->all();
+    }
 
 
 

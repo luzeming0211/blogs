@@ -27,7 +27,7 @@
                 </li>
                 @foreach($admin_user as $key => $val)
                     <li class="waves-block waves-effect active">
-                        <a href="/user/{{ $val->id }}">
+                        <a href="/article/user/{{ $val->id }}">
                             {{ $val->username }}
                         </a>
                     </li>
