@@ -13,5 +13,6 @@ Route::group([
 
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('/article', ArticleController::class);
+    $router->resource('/nes', NesController::class);
 
 });

@@ -1,6 +1,10 @@
 <?php
+Route::get('/nes','NesController@index');
+Route::get('/nes/{id}','NesController@detail');
+//Route::get('/nes/{room_id}/{id}','NesController@room');
 
 Route::get('/', 'ArticleController@index');
-Route::get('/{id}', 'ArticleController@detail');
-Route::get('/user/{userid}', 'ArticleController@user');
-Route::get('/user/{userid}/{id}', 'ArticleController@');
+Route::get('/article/{id}', 'ArticleController@detail');
+Route::get('/article/user/{userid}', 'ArticleController@user');
+
+
