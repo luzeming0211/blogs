@@ -92,7 +92,7 @@ return [
 
         'redis' => [
             'server' => [
-                'host' => env('REDIS_HOST', '127.0.0.1'),
+                'host' => env('REDIS_HOST', '47.95.12.100'),
                 'password' => env('REDIS_PASSWORD', 'Lu903101767'),
                 'port' => env('REDIS_PORT', 6379),
                 'database' => 0,

@@ -10,8 +10,8 @@ return [
     |
     */
     'server' => [
-        'host' => env('SWOOLE_HTTP_HOST', 'tool.boser1u.top'),
-        'port' => env('SWOOLE_HTTP_PORT', '1215'),
+        'host' => env('SWOOLE_HTTP_HOST', '47.95.12.100'),
+        'port' => env('SWOOLE_HTTP_PORT', '9501'),
         'public_path' => base_path('public'),
         // Determine if to use swoole to respond request for static files
         'handle_static_files' => env('SWOOLE_HANDLE_STATIC', true),
@@ -50,7 +50,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'websocket' => [
-        'enabled' => env('SWOOLE_HTTP_WEBSOCKET', false),
+        'enabled' => env('SWOOLE_HTTP_WEBSOCKET', true),
     ],
 
     /*
