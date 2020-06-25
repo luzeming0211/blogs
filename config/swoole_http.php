@@ -10,7 +10,8 @@ return [
     |
     */
     'server' => [
-        'host' => env('SWOOLE_HTTP_HOST', '47.95.12.100'),
+//        'host' => env('SWOOLE_HTTP_HOST', '192.168.188.214'),
+        'host' => env('SWOOLE_HTTP_HOST', '127.0.0.1'),
         'port' => env('SWOOLE_HTTP_PORT', '9501'),
         'public_path' => base_path('public'),
         // Determine if to use swoole to respond request for static files
