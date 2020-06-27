@@ -25,11 +25,12 @@ if (!function_exists('isMobile')) {
 }
 
 if (!function_exists('du')) {
-    function du($link) {
-        if(empty($link) || strstr($link, 'http://')){
+    function du($link)
+    {
+        if (empty($link) || strstr($link, 'http://')) {
             return $link;
         }
-        return  'http://' . $link;
+        return 'http://' . $link;
     }
 }
 
@@ -44,6 +45,15 @@ if (!function_exists('ld')) {
     function ld($val)
     {
         Log::info($val);
+    }
+}
+
+if (!function_exists('getWxDomain')) {
+    function getWxDomain()
+    {
+        $ws_config = config('swoole_http.server');
+        $domain = env('APP_DOMAIN');
+        return $domain . ':' . $ws_config['port'];
     }
 }
 

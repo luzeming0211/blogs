@@ -30,7 +30,7 @@ class WebsocketHandler implements HandlerContract
                     'pingTimeout' => Config::get('swoole_websocket.ping_timeout'),
                 ]
             );
-            $initPayload = Packet::OPEN . $payload;
+            $initPayload = $payload;
             $connectPayload = Packet::MESSAGE . Packet::CONNECT;
 
             App::make(Server::class)->push($fd, $initPayload);

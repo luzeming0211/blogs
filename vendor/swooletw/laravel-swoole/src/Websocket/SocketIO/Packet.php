@@ -133,12 +133,12 @@ class Packet
         $packet = trim($packet);
         $start = strpos($packet, '[');
 
-        if ($start === false || substr($packet, -1) !== ']') {
-            return null;
-        }
-
-        $data = substr($packet, $start, strlen($packet) - $start);
-        $data = json_decode($data, true);
+//        if ($start === false || substr($packet, -1) !== ']') {
+//            return null;
+//        }
+//
+//        $data = substr($packet, $start, strlen($packet) - $start);
+        $data = json_decode($packet, true);
 
         if (is_null($data)) {
             return null;
