@@ -189,8 +189,7 @@ function JInterval(funcName, time) {
 
 
 function setImg(canvas) {
-    let img_canvas = canvas.toDataURL();
-    document.getElementById("game_img").src = img_canvas;
+    document.getElementById("game_img").src = canvas.toDataURL();
 }
 
 function nes_boot(rom_data) {

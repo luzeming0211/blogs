@@ -5,41 +5,42 @@ use Illuminate\Http\Request;
 use SwooleTW\Http\Websocket\Facades\Room;
 use SwooleTW\Http\Websocket\Facades\Websocket;
 
-/*
-|--------------------------------------------------------------------------
-| Websocket Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register websocket events for your application.
-|
-*/
-Websocket::on('message', function ($websocket, $data) {
-    ld($data);
+$redis = '\Illuminate\Support\Facades\Redis';
+Websocket::on('message', function ($websocket, $data) use ($redis) {
+    if (is_array($data)) {
+        $key_client = 'client:' . Websocket::getSender();
+        $room_id = isset($data['room_id']) ? $data['room_id'] : '';
+        if (!empty($room_id)) {
+            $flag = $redis::exists($key_client);
+            if (!$flag) {
+                $redis::set($key_client, $room_id);
+            }
+//            Room::add(Websocket::getSender(), $room_id);
+//            $a = Room::getClients($room_id);
+//            dump($a);
+//            Websocket::to($room_id)->emit('message', $data);
+//            Websocket::broadcast()->to([$room_id])->emit('message', $data);
+            Websocket::broadcast()->emit('message', $data);
+        }
+    }
 
-    Websocket::broadcast()->emit('message', $data);
 });
 Websocket::on('connect', function ($websocket, Request $request) {
-    // called while socket on connect
-    ld('called while socket on connect');
-//    ld($request);
-
-
-//    $msg = json_encode(['message'=>$websocket]);
-//    Websocket::emit('message', $msg);
-//    Websocket::broadcast()->emit('message', 'this is a test');
-//    Room::getClients('game_1');
-//    Websocket::join('some room');
+    $aPara = [
+        'type' => 'message',
+        'content' => '感谢来到，尽情游玩吧',
+    ];
+    Websocket::emit('message', $aPara);
 });
 
-Websocket::on('disconnect', function ($websocket) {
-    // called while socket on disconnect
-//    ld('called while socket on disconnect');
+Websocket::on('disconnect', function ($websocket) use ($redis) {
+    $key_client = 'client:' . Websocket::getSender();
+    $room_id = $redis::get($key_client);
+    $room_str = 'game:room_' . $room_id;
+    $redis::del($room_str);
+    $redis::del($key_client);
+//    Room::delete(Websocket::getSender(), [$room_id]);
 });
 
-//Websocket::on('connect', "\App\Http\Controllers\SocketController@connect");
-//
-//Websocket::on('disconnect', "\App\Http\Controllers\SocketController@disconnect");
-//
-//Websocket::on('message', "\App\Http\Controllers\SocketController@message");
 
 

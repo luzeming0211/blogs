@@ -58,14 +58,14 @@ return [
     | Websocket client's heartbeat interval (ms)
     |--------------------------------------------------------------------------
     */
-    'ping_interval' => 25000,
+    'ping_interval' => 2500,
 
     /*
     |--------------------------------------------------------------------------
     | Websocket client's heartbeat interval timeout (ms)
     |--------------------------------------------------------------------------
     */
-    'ping_timeout' => 60000,
+    'ping_timeout' => 6000,
 
     /*
     |--------------------------------------------------------------------------
@@ -93,10 +93,10 @@ return [
 
         'redis' => [
             'server' => [
-                'host' => env('REDIS_HOST', '47.95.12.100'),
-                'password' => env('REDIS_PASSWORD', 'Lu903101767'),
+                'host' => env('REDIS_HOST', ''),
+                'password' => env('REDIS_PASSWORD', ''),
                 'port' => env('REDIS_PORT', 6379),
-                'database' => 0,
+                'database' => 1,
                 'persistent' => true,
             ],
             'options' => [

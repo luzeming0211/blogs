@@ -10,7 +10,6 @@ return [
     |
     */
     'server' => [
-//        'host' => env('SWOOLE_HTTP_HOST', '192.168.188.214'),
         'host' => env('SWOOLE_HTTP_HOST', '0.0.0.0'),
         'port' => env('SWOOLE_HTTP_PORT', '9501'),
         'public_path' => base_path('public'),
@@ -60,7 +59,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'hot_reload' => [
-        'enabled' => env('SWOOLE_HOT_RELOAD_ENABLE', false),
+        'enabled' => env('SWOOLE_HOT_RELOAD_ENABLE', true),
         'recursively' => env('SWOOLE_HOT_RELOAD_RECURSIVELY', true),
         'directory' => env('SWOOLE_HOT_RELOAD_DIRECTORY', base_path()),
         'log' => env('SWOOLE_HOT_RELOAD_LOG', true),
