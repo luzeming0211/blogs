@@ -29,6 +29,7 @@
             type = info.type;
             if (type == 'img') {
                 img = info.img;
+                console.log(img);
                 $("#game_img").attr('src', img);
             }
             if (type == 'message') {
