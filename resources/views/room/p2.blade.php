@@ -23,7 +23,7 @@
 
     ws.onmessage = function (evt) {
         var received_msg = evt.data;
-        if (received_msg.indexOf("message") != -1) {
+        // if (received_msg.indexOf("message") != -1) {
             var obj = JSON.parse(evt.data);
             info = obj[1];
             type = info.type;
@@ -35,7 +35,7 @@
             if (type == 'message') {
                 $('#message').html(info.content);
             }
-        }
+        // }
     };
 
     ws.onclose = function () {
