@@ -179,7 +179,7 @@ function nes_init(canvas_id) {
 }
 
 function makeImg(canvas) {
-    setInterval(setImg, 50, canvas);
+    setInterval(setImg, 30, canvas);
 }
 
 function setImg(canvas) {
