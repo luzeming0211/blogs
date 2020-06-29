@@ -36,7 +36,7 @@ Websocket::on('disconnect', function ($websocket) use ($redis) {
     $room_str = 'game:room_' . $room_id;
     $redis::del($room_str);
     $redis::del($key_client);
-//    Room::delete(Websocket::getSender(), [$room_id]);
+    Room::delete(Websocket::getSender(), [$room_id]);
 });
 
 
