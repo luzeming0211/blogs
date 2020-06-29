@@ -15,12 +15,9 @@ Websocket::on('message', function ($websocket, $data) use ($redis) {
             if (!$flag) {
                 $redis::set($key_client, $room_id);
             }
-//            Room::add(Websocket::getSender(), $room_id);
-//            $a = Room::getClients($room_id);
-//            dump($a);
-//            Websocket::to($room_id)->emit('message', $data);
-//            Websocket::broadcast()->to([$room_id])->emit('message', $data);
-            Websocket::broadcast()->emit('message', $data);
+            $redis::set($key_client, $room_id);
+            Websocket::join($room_id);
+            Websocket::broadcast()->to($room_id)->emit('message', $data);
         }
     }
 

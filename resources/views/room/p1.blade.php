@@ -31,7 +31,7 @@
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
     ws.onopen = function () {
-        // send_img();
+        send_conn();
     };
 
     ws.onmessage = function (evt) {
@@ -63,6 +63,22 @@
     window.onbeforeunload = function(event) {
         ws.close();
     }
+    function send_conn(){
+        var para = {
+            room_id: room_id,
+            userid: userid,
+            username: username,
+            event: 'message',
+            type: 'conn',
+        };
+        var data = {
+            0: 'message',
+            1: para,
+        };
+        var data_str = JSON.stringify(data);
+        ws.send(data_str);
+    }
+
     function send_leave(type) {
         var para = {
             room_id: room_id,
