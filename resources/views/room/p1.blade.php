@@ -5,7 +5,7 @@
     <title>{{ $nes->name }}</title>
 </head>
 <body>
-<div id="message"></div>
+<div id="message">等待p2加入</div>
 <div style="margin: auto; width: 75%;">
     <canvas id="nes-canvas" width="256" height="240" style="width: 75%"/>
 </div>
@@ -16,7 +16,7 @@
     开始 ：回车
     选择：B
 </div>
-<button onclick="send_leave('p1_leave');">点我离开</button>
+{{--<button onclick="send_leave('p1_leave');">点我离开</button>--}}
 <img src="" alt="" id="game_img">
 <input type="text" value="{{ $url }}">
 <script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
@@ -27,7 +27,6 @@
     var username = '{{ $username }}';
     var room_id = '{{ $room_id }}';
 
-    nes_load_url("nes-canvas", "{{ $nes->game }}");
 
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
@@ -42,7 +41,6 @@
             info = obj[1];
             key_code = info.key_code;
             type = info.type;
-            console.log(type);
             if (type == 'keydown') {
                 keyboard_p2(nes.buttonDown, key_code)
             }
@@ -53,9 +51,7 @@
                 $('#message').html(info.content);
             }
             if (type == 'join') {
-                console.log('join');
                 nes_load_url("nes-canvas", "{{ $nes->game }}");
-                send_img();
                 $('#message').html(info.content);
             }
         }
@@ -74,29 +70,6 @@
             username: username,
             event: 'message',
             type: type,
-        };
-        var data = {
-            0: 'message',
-            1: para,
-        };
-        var data_str = JSON.stringify(data);
-        ws.send(data_str);
-    }
-
-
-    function send_img() {
-        interval = window.setInterval("sendImg()", 10);
-    }
-
-    function sendImg() {
-        let img = $("#game_img").attr('src');
-        var para = {
-            room_id: room_id,
-            userid: userid,
-            username: username,
-            img: img,
-            event: 'message',
-            type: 'img',
         };
         var data = {
             0: 'message',

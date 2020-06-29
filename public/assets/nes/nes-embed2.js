@@ -174,7 +174,32 @@ function nes_init(canvas_id) {
     script_processor.onaudioprocess = audio_callback;
     script_processor.connect(audio_ctx.destination);
 
-    JInterval(setImg, 10, canvas);
+    makeImg(canvas);
+
+}
+
+function makeImg(canvas) {
+    setInterval(setImg, 10, canvas);
+}
+
+function setImg(canvas) {
+    sendImg(canvas.toDataURL());
+}
+function sendImg(img) {
+    var para = {
+        room_id: room_id,
+        userid: userid,
+        username: username,
+        img: img,
+        event: 'message',
+        type: 'img',
+    };
+    var data = {
+        0: 'message',
+        1: para,
+    };
+    var data_str = JSON.stringify(data);
+    ws.send(data_str);
 }
 
 function JInterval(funcName, time) {
@@ -188,9 +213,6 @@ function JInterval(funcName, time) {
 }
 
 
-function setImg(canvas) {
-    document.getElementById("game_img").src = canvas.toDataURL();
-}
 
 function nes_boot(rom_data) {
     nes.loadROM(rom_data);
