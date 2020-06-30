@@ -33,7 +33,7 @@ class NesController extends Controller
         $room_str = 'game:room_' . $room_id;
         Redis::set($room_str, $userid);
         $url = env('APP_URL') . '/nes/' . $room_id . '/' . $id;
-        ld($url);
+//        ld($url);
         $ws_host = getWxDomain();
         $show_page = 'room.p1';
         if (isMobile()) {
