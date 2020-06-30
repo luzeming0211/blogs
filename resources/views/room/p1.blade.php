@@ -16,7 +16,6 @@
     开始 ：回车
     选择：B
 </div>
-{{--<button onclick="send_leave('p1_leave');">点我离开</button>--}}
 <img src="" alt="" id="game_img">
 <input type="text" value="{{ $url }}">
 <script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>

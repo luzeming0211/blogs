@@ -41,11 +41,11 @@
     </div>
 </div>
 <div class="joystickpad">
-    <div id="joystick_btn_X" class="xbutton joystick_btn_op_2">X</div>
-    <div id="joystick_btn_Y" class="xbutton joystick_btn_op_2">Y</div>
+{{--    <div id="joystick_btn_X" class="xbutton joystick_btn_op_2">X</div>--}}
+{{--    <div id="joystick_btn_Y" class="xbutton joystick_btn_op_2">Y</div>--}}
     <div id="joystick_btn_A" class="xbutton joystick_btn_op_2">A</div>
     <div id="joystick_btn_B" class="xbutton joystick_btn_op_2">B</div>
-    <div id="joystick_btn_AB" class="xbutton joystick_btn_op_2">AB</div>
+{{--    <div id="joystick_btn_AB" class="xbutton joystick_btn_op_2">AB</div>--}}
 </div>
 <div class="tab-pane-bg" style="z-index:99;display:none">
     <header class="tenant-model-header">
@@ -291,7 +291,7 @@
     };
 
     function get_img(canvas) {
-        setInterval(setImg, 100);
+        setInterval(setImg, 120);
     }
     function setImg(){
         $("#game_img").attr('src',img_data);

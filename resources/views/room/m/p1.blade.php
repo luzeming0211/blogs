@@ -17,6 +17,7 @@
 </head>
 
 <body>
+<div id="qrcode"></div>
 <div id="emulator">
     <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
             style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></canvas>
@@ -40,7 +41,7 @@
     </div>
 </div>
 <div class="joystickpad">
-    <div id="joystick_btn_menu" class="left pspbutton joystick_btn_op_1">菜单</div>
+{{--    <div id="joystick_btn_menu" class="left pspbutton joystick_btn_op_1">菜单</div>--}}
     <div id="joystick_btn_choice" class="left pspbutton joystick_btn_op_1">选择</div>
     <div id="joystick_btn_start" class="left pspbutton joystick_btn_op_1">开始</div>
     <div id="joystick_btn_X" class="xbutton joystick_btn_op_2">X</div>
@@ -115,6 +116,7 @@
 <script type="text/javascript"
         src="{{asset('assets/nes_m')}}/js/play-mobile-9e6418b070162fc74f79a769f8a40c18.js"></script>
 <script type="text/javascript" src="{{asset('assets/nes_m')}}/js/play-10e0778a0b61417ba80b58197e44c5ff.js"></script>
+
 <script>
     function wScreen1(type) {
         var realWidth = $(window).width();
@@ -256,18 +258,26 @@
     }
 
 </script>
+<script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
 <script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
+<script type="text/javascript" src="{{asset('assets/common')}}/js/jquery.qrcode.min.js"></script>
 <script>
     var userid = '{{ $userid }}';
     var username = '{{ $username }}';
     var room_id = '{{ $room_id }}';
     var rom_url = '{{ $nes->game }}';
+    var join_url = '{{ $url }}';
+
+    $('#qrcode').qrcode(join_url);
+
+
 
 
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
     ws.onopen = function () {
         send_conn();
+
     };
 
     ws.onmessage = function (evt) {
@@ -287,7 +297,7 @@
                 // $('#message').html(info.content);
             }
             if (type == 'join') {
-                // initcheatmap();
+                $("#qrcode").remove();
                 initmenu();
                 mobile_init();
                 nes_load_url("nes-canvas", rom_url);
