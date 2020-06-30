@@ -1,5 +1,5 @@
 <?php
-//Route::get('/nes/test','NesController@test1');
+Route::get('/nes/test','NesController@test1');
 Route::get('/nes','NesController@index');
 Route::get('/nes/{id}','NesController@detail');
 Route::get('/nes/croom/{id}','NesController@croom');

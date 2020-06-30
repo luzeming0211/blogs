@@ -15,10 +15,12 @@
     var username = '{{ $username }}';
     var room_id = '{{ $room_id }}';
 
+    var img_data;
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
     ws.onopen = function () {
         send_join();
+        get_img();
     };
 
     ws.onmessage = function (evt) {
@@ -28,9 +30,7 @@
             info = obj[1];
             type = info.type;
             if (type == 'img') {
-                img = info.img;
-                console.log(img);
-                $("#game_img").attr('src', img);
+                img_data = info.img;
             }
             if (type == 'message') {
                 $('#message').html(info.content);
@@ -38,6 +38,12 @@
         }
     };
 
+    function get_img(canvas) {
+        setInterval(setImg, 20);
+    }
+    function setImg(){
+        $("#game_img").attr('src',img_data);
+    }
     ws.onclose = function () {
         alert("连接已关闭...");
     };
@@ -101,6 +107,7 @@
     $(document).keyup(function (event) {
         send_key(event.keyCode, 'keyup');
     });
+
 </script>
 </body>
 </html>

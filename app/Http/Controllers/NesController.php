@@ -65,7 +65,7 @@ class NesController extends Controller
 
 
     public function test1(){
-        Room::add(1, 'room');
+        return view('room.m.p1');
     }
 
 
