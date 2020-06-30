@@ -39,7 +39,7 @@
     };
 
     function get_img(canvas) {
-        setInterval(setImg, 20);
+        setInterval(setImg, 100);
     }
     function setImg(){
         $("#game_img").attr('src',img_data);
