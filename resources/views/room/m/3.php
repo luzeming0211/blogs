@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -40,9 +41,13 @@
     </div>
 </div>
 <div class="joystickpad">
+    <!-- <div  id="joystick_btn_saverom" class="left btn-icon"><i class="fa fa-save fa-3x"></i></div> -->
+    <!-- <div  id="start_multi_btn" class="left btn-icon"><i class="fa fa-users fa-3x"></i></div> -->
+    <!-- <a  href="/" id="joystick_btn_home" class="left pspbutton joystick_btn_op_1">主页</a> -->
     <div id="joystick_btn_menu" class="left pspbutton joystick_btn_op_1">菜单</div>
     <div id="joystick_btn_choice" class="left pspbutton joystick_btn_op_1">选择</div>
     <div id="joystick_btn_start" class="left pspbutton joystick_btn_op_1">开始</div>
+    <!-- <i  id="messageshow" class="fa fa-bars fa-2x" aria-hidden="true"></i> -->
     <div id="joystick_btn_X" class="xbutton joystick_btn_op_2">X</div>
     <div id="joystick_btn_Y" class="xbutton joystick_btn_op_2">Y</div>
     <div id="joystick_btn_A" class="xbutton joystick_btn_op_2">A</div>
@@ -112,9 +117,14 @@
 <script src="{{asset('assets/nes_m')}}/js/jquery.min.js"></script>
 <script type="text/javascript"
         src="{{asset('assets/nes_m')}}/js/play-mobile-b4042d918f463eaaf846b77239552aca.js"></script>
+<!--<script src="{{asset('assets/nes_m')}}/js/socket.io.js"></script>-->
 <script type="text/javascript"
         src="{{asset('assets/nes_m')}}/js/play-mobile-9e6418b070162fc74f79a769f8a40c18.js"></script>
+<!--<script type="text/javascript" src="{{asset('assets/nes_m')}}/js/43f22b766e50d9d86265f92f42759b9c.js"></script>-->
 <script type="text/javascript" src="{{asset('assets/nes_m')}}/js/play-10e0778a0b61417ba80b58197e44c5ff.js"></script>
+<!-- <script type="text/javascript" src="{{asset('assets/nes_m')}}/js/qrcode.min.js"></script> -->
+{{--<script type="text/javascript" src="{{asset('assets/nes_m')}}/js/ima3.js"></script>--}}
+{{--<script type="text/javascript" src="{{asset('assets/nes_m')}}/js/g.ads.js"></script>--}}
 <script>
     function wScreen1(type) {
         var realWidth = $(window).width();
@@ -255,125 +265,52 @@
         $('.menu').hide();
     }
 
+    var start_multi = false;
     $(document).ready(function () {
-        // initcheatmap();
-        // initmenu();
-        // mobile_init();
-        // nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
+        initcheatmap();
+        //startchat();
+        initmenu();
+        // var token = getQueryString("token");
+        // if (token) {
+        //     stopnes();
+        //     startMulti(token);
+        // } else {
+            /* var qrcode = new QRCode(document.getElementById("qrcode"), {
+                width : 100,
+                height : 100
+            }); */
+            // $('#start_multi_btn').click(function () {
+            //     if (start_multi) {
+            //         showQrcode();
+            //         return;
+            //     }
+            //     var u = "";
+            //     $.post("getshort",
+            //         {
+            //             u: encodeURI(decodeURI(window.location.href) + "&token=" + u),
+            //         },
+            //         function (data, status) {
+            //             var url = eval(data);
+            //             if (url && url.length > 0) {
+            //                 console.log(url[0]);
+            //                 var shortUrl = url[0].url_short;
+            //                 qrcode.makeCode(shortUrl);
+            //                 stopnes();
+            //                 startMulti(u);
+            //                 start_multi = true;
+            //             }
+            //         });
+            // })
+            // initCheatCon();
+            // initSavelist(4511);
+        // }
+        mobile_init();
+        nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
+        setTimeout(savehistory, 10000);
     });
 </script>
-<script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
-<script>
-    var userid = '{{ $userid }}';
-    var username = '{{ $username }}';
-    var room_id = '{{ $room_id }}';
-    var rom_url = '{{ $nes->game }}';
-
-
-    var ws = new WebSocket("ws://{{ $ws_host }}");
-
-    ws.onopen = function () {
-        send_conn();
-    };
-
-    ws.onmessage = function (evt) {
-        var received_msg = evt.data;
-        try{
-            var obj = JSON.parse(evt.data);
-            info = obj[1];
-            key_code = info.key_code;
-            type = info.type;
-            if (type == 'keydown') {
-                console.log(key_code);
-                p2_action(nes.buttonDown, key_code);
-            }
-            if (type == 'keyup') {
-                console.log(key_code);
-                p2_action(nes.buttonUp, key_code);
-            }
-            if (type == 'message') {
-                // $('#message').html(info.content);
-            }
-            if (type == 'join') {
-                // initcheatmap();
-                initmenu();
-                mobile_init();
-                nes_load_url("nes-canvas", rom_url);
-            }
-        }catch (e) {
-            console.log(received_msg);
-        }
-    };
-
-    function p2_action(callback, keyCode) {
-        var player = 2;
-        switch (keyCode) {
-            case 'up': // UP
-                callback(player, jsnes.Controller.BUTTON_UP);
-                break;
-            case 'down': // Down
-                callback(player, jsnes.Controller.BUTTON_DOWN);
-                break;
-            case 'left': // Left
-                callback(player, jsnes.Controller.BUTTON_LEFT);
-                break;
-            case 'right': // Right
-                callback(player, jsnes.Controller.BUTTON_RIGHT);
-                break;
-            case 'A': //77
-                callback(player, jsnes.Controller.BUTTON_A);
-                break;
-            case 'B':
-                callback(player, jsnes.Controller.BUTTON_B);
-                break;
-            case 66: //
-                callback(player, jsnes.Controller.BUTTON_SELECT);
-                break;
-            case 13: //
-                callback(player, jsnes.Controller.BUTTON_START);
-                break;
-            default:
-                break;
-        }
-    }
-
-    ws.onclose = function () {
-        alert("连接已关闭...");
-    };
-    window.onbeforeunload = function(event) {
-        ws.close();
-    }
-    function send_conn(){
-        var para = {
-            room_id: room_id,
-            userid: userid,
-            username: username,
-            event: 'message',
-            type: 'conn',
-        };
-        var data = {
-            0: 'message',
-            1: para,
-        };
-        var data_str = JSON.stringify(data);
-        ws.send(data_str);
-    }
-
-    function send_leave(type) {
-        var para = {
-            room_id: room_id,
-            userid: userid,
-            username: username,
-            event: 'message',
-            type: type,
-        };
-        var data = {
-            0: 'message',
-            1: para,
-        };
-        var data_str = JSON.stringify(data);
-        ws.send(data_str);
-    }
-</script>
+{{--<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");--}}
+{{--    document.write(unescape("%3Cspan id='cnzz_stat_icon_1277037530'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1277037530' type='text/javascript'%3E%3C/script%3E"));--}}
+{{--    document.getElementById("cnzz_stat_icon_1277037530").style.display = "none"; </script>--}}
 </body>
 </html>

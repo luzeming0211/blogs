@@ -18,8 +18,9 @@
 
 <body>
 <div id="emulator">
-    <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
-            style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></canvas>
+{{--    <canvas id="nes-canvas" class="nes-screen" width="256" height="240"--}}
+{{--            style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></canvas>--}}
+    <img src="" id="game_img" alt="">
 </div>
 <div class="bg-model"
      style="position: absolute; top: 0%; left: 0%; display: none; background: rgba(0, 0, 0, 0.3); width: 100%; height: 100%; position: fixed; z-index: 9999">
@@ -40,9 +41,6 @@
     </div>
 </div>
 <div class="joystickpad">
-    <div id="joystick_btn_menu" class="left pspbutton joystick_btn_op_1">菜单</div>
-    <div id="joystick_btn_choice" class="left pspbutton joystick_btn_op_1">选择</div>
-    <div id="joystick_btn_start" class="left pspbutton joystick_btn_op_1">开始</div>
     <div id="joystick_btn_X" class="xbutton joystick_btn_op_2">X</div>
     <div id="joystick_btn_Y" class="xbutton joystick_btn_op_2">Y</div>
     <div id="joystick_btn_A" class="xbutton joystick_btn_op_2">A</div>
@@ -115,6 +113,7 @@
 <script type="text/javascript"
         src="{{asset('assets/nes_m')}}/js/play-mobile-9e6418b070162fc74f79a769f8a40c18.js"></script>
 <script type="text/javascript" src="{{asset('assets/nes_m')}}/js/play-10e0778a0b61417ba80b58197e44c5ff.js"></script>
+<script type="text/javascript" src="{{asset('assets/nes')}}/m_p2.js"></script>
 <script>
     function wScreen1(type) {
         var realWidth = $(window).width();
@@ -256,24 +255,22 @@
     }
 
     $(document).ready(function () {
-        // initcheatmap();
-        // initmenu();
-        // mobile_init();
-        // nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
+        initmenu();
+        mobile_init();
     });
 </script>
-<script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
+<script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
 <script>
     var userid = '{{ $userid }}';
     var username = '{{ $username }}';
     var room_id = '{{ $room_id }}';
-    var rom_url = '{{ $nes->game }}';
 
-
+    var img_data;
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
     ws.onopen = function () {
-        send_conn();
+        send_join();
+        get_img();
     };
 
     ws.onmessage = function (evt) {
@@ -281,85 +278,33 @@
         try{
             var obj = JSON.parse(evt.data);
             info = obj[1];
-            key_code = info.key_code;
             type = info.type;
-            if (type == 'keydown') {
-                console.log(key_code);
-                p2_action(nes.buttonDown, key_code);
-            }
-            if (type == 'keyup') {
-                console.log(key_code);
-                p2_action(nes.buttonUp, key_code);
+            if (type == 'img') {
+                img_data = info.img;
             }
             if (type == 'message') {
                 // $('#message').html(info.content);
-            }
-            if (type == 'join') {
-                // initcheatmap();
-                initmenu();
-                mobile_init();
-                nes_load_url("nes-canvas", rom_url);
             }
         }catch (e) {
             console.log(received_msg);
         }
     };
 
-    function p2_action(callback, keyCode) {
-        var player = 2;
-        switch (keyCode) {
-            case 'up': // UP
-                callback(player, jsnes.Controller.BUTTON_UP);
-                break;
-            case 'down': // Down
-                callback(player, jsnes.Controller.BUTTON_DOWN);
-                break;
-            case 'left': // Left
-                callback(player, jsnes.Controller.BUTTON_LEFT);
-                break;
-            case 'right': // Right
-                callback(player, jsnes.Controller.BUTTON_RIGHT);
-                break;
-            case 'A': //77
-                callback(player, jsnes.Controller.BUTTON_A);
-                break;
-            case 'B':
-                callback(player, jsnes.Controller.BUTTON_B);
-                break;
-            case 66: //
-                callback(player, jsnes.Controller.BUTTON_SELECT);
-                break;
-            case 13: //
-                callback(player, jsnes.Controller.BUTTON_START);
-                break;
-            default:
-                break;
-        }
+    function get_img(canvas) {
+        setInterval(setImg, 50);
     }
-
+    function setImg(){
+        $("#game_img").attr('src',img_data);
+        $("#game_img").css('transform', 'rotate(90deg)');
+    }
     ws.onclose = function () {
         alert("连接已关闭...");
     };
     window.onbeforeunload = function(event) {
         ws.close();
     }
-    function send_conn(){
-        var para = {
-            room_id: room_id,
-            userid: userid,
-            username: username,
-            event: 'message',
-            type: 'conn',
-        };
-        var data = {
-            0: 'message',
-            1: para,
-        };
-        var data_str = JSON.stringify(data);
-        ws.send(data_str);
-    }
 
-    function send_leave(type) {
+    function send_leave() {
         var para = {
             room_id: room_id,
             userid: userid,
@@ -374,6 +319,48 @@
         var data_str = JSON.stringify(data);
         ws.send(data_str);
     }
+
+    function send_join() {
+        var para = {
+            content: '我来了',
+            room_id: room_id,
+            userid: userid,
+            username: username,
+            event: 'message',
+            type: 'join',
+        };
+        var data = {
+            0: 'message',
+            1: para,
+        };
+        var data_str = JSON.stringify(data);
+        ws.send(data_str);
+    }
+
+    function send_key(key_code, type) {
+        var para = {
+            key_code: key_code,
+            room_id: room_id,
+            userid: userid,
+            username: username,
+            event: 'message',
+            type: type,
+        };
+        var data = {
+            0: 'message',
+            1: para,
+        };
+        var data_str = JSON.stringify(data);
+        ws.send(data_str);
+    }
+
+    $(document).keydown(function (event) {
+        send_key(event.keyCode, 'keydown');
+    });
+    $(document).keyup(function (event) {
+        send_key(event.keyCode, 'keyup');
+    });
+
 </script>
 </body>
 </html>

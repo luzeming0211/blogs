@@ -262,12 +262,11 @@
         // nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
     });
 </script>
-<script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
+
 <script>
     var userid = '{{ $userid }}';
     var username = '{{ $username }}';
     var room_id = '{{ $room_id }}';
-    var rom_url = '{{ $nes->game }}';
 
 
     var ws = new WebSocket("ws://{{ $ws_host }}");
@@ -285,11 +284,11 @@
             type = info.type;
             if (type == 'keydown') {
                 console.log(key_code);
-                p2_action(nes.buttonDown, key_code);
+                // nesButtonUp(key_code);
             }
             if (type == 'keyup') {
                 console.log(key_code);
-                p2_action(nes.buttonUp, key_code);
+                // nesButtonUp(key_code);
             }
             if (type == 'message') {
                 // $('#message').html(info.content);
@@ -298,50 +297,25 @@
                 // initcheatmap();
                 initmenu();
                 mobile_init();
-                nes_load_url("nes-canvas", rom_url);
+                nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
             }
         }catch (e) {
             console.log(received_msg);
         }
     };
 
-    function p2_action(callback, keyCode) {
-        var player = 2;
-        switch (keyCode) {
-            case 'up': // UP
-                callback(player, jsnes.Controller.BUTTON_UP);
-                break;
-            case 'down': // Down
-                callback(player, jsnes.Controller.BUTTON_DOWN);
-                break;
-            case 'left': // Left
-                callback(player, jsnes.Controller.BUTTON_LEFT);
-                break;
-            case 'right': // Right
-                callback(player, jsnes.Controller.BUTTON_RIGHT);
-                break;
-            case 'A': //77
-                callback(player, jsnes.Controller.BUTTON_A);
-                break;
-            case 'B':
-                callback(player, jsnes.Controller.BUTTON_B);
-                break;
-            case 66: //
-                callback(player, jsnes.Controller.BUTTON_SELECT);
-                break;
-            case 13: //
-                callback(player, jsnes.Controller.BUTTON_START);
-                break;
-            default:
-                break;
-        }
-    }
-
     ws.onclose = function () {
         alert("连接已关闭...");
     };
     window.onbeforeunload = function(event) {
         ws.close();
+    }
+    function nesButtonDown(key) {
+        nes.buttonDown(2, key)
+    }
+
+    function nesButtonUp(key) {
+        nes.buttonUp(2, key)
     }
     function send_conn(){
         var para = {
