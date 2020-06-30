@@ -255,12 +255,6 @@
         $('.menu').hide();
     }
 
-    $(document).ready(function () {
-        // initcheatmap();
-        // initmenu();
-        // mobile_init();
-        // nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
-    });
 </script>
 <script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
 <script>
@@ -284,11 +278,9 @@
             key_code = info.key_code;
             type = info.type;
             if (type == 'keydown') {
-                console.log(key_code);
                 p2_action(nes.buttonDown, key_code);
             }
             if (type == 'keyup') {
-                console.log(key_code);
                 p2_action(nes.buttonUp, key_code);
             }
             if (type == 'message') {
