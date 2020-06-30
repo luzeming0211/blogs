@@ -179,11 +179,11 @@ function nes_init(canvas_id) {
 }
 
 function makeImg(canvas) {
-    setInterval(setImg, 100, canvas);
+    setInterval(setImg, 80, canvas);
 }
 
 function setImg(canvas) {
-    sendImg(canvas.toDataURL());
+    sendImg(canvas.toDataURL("image/jpeg", 0.7));
 }
 function sendImg(img) {
     var para = {

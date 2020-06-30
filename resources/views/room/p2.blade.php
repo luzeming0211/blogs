@@ -25,7 +25,7 @@
 
     ws.onmessage = function (evt) {
         var received_msg = evt.data;
-        if (received_msg.indexOf("message") != -1) {
+        try{
             var obj = JSON.parse(evt.data);
             info = obj[1];
             type = info.type;
@@ -35,6 +35,8 @@
             if (type == 'message') {
                 $('#message').html(info.content);
             }
+        }catch (e) {
+            console.log(received_msg);
         }
     };
 
