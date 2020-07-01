@@ -207,7 +207,7 @@
             case 'B':
                 callback(send_player, jsnes.Controller.BUTTON_B);
                 break;
-            case 'select': //
+            case 'choice': //
                 callback(send_player, jsnes.Controller.BUTTON_SELECT);
                 break;
             case 'start': //
