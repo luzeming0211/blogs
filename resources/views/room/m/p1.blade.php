@@ -150,7 +150,7 @@
     var join_url = '{{ $url }}';
     var player = 1;
     var send_player = 2;
-    // $('#qrcode').qrcode(join_url);
+    $('#qrcode').qrcode(join_url);
 
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
