@@ -74,9 +74,9 @@ class NesController extends Controller
     }
 
 
-    public function test1()
+    public function test2()
     {
-        return view('room.m.p1');
+        return view('room.m.test');
     }
 
 

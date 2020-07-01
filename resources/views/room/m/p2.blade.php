@@ -282,6 +282,7 @@
             if (type == 'img') {
                 img_data = info.img;
             }
+
             if (type == 'message') {
                 // $('#message').html(info.content);
             }
