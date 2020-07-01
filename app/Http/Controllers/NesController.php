@@ -36,8 +36,7 @@ class NesController extends Controller
         ld($url);
         $ws_host = getWxDomain();
         $show_page = 'room.m.p1';
-        $player = 1;
-        return view($show_page, compact('player','userid', 'username', 'room_id', 'nes', 'ws_host', 'url'));
+        return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host', 'url'));
     }
 
     public function room($room_id, $id)
@@ -65,9 +64,8 @@ class NesController extends Controller
 
         $ws_host = getWxDomain();
         $show_page = 'room.m.p2';
-        $player = 2;
         $url = '';
-        return view($show_page, compact('player','userid', 'username', 'room_id', 'nes', 'ws_host','url'));
+        return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host','url'));
     }
 
 

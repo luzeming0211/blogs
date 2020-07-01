@@ -148,7 +148,8 @@
     var room_id = '{{ $room_id }}';
     var rom_url = '{{ $nes->game }}';
     var join_url = '{{ $url }}';
-    var player ='{{ $player }}';
+    var player = 1;
+    var send_player = 2;
     // $('#qrcode').qrcode(join_url);
 
     var ws = new WebSocket("ws://{{ $ws_host }}");
@@ -189,28 +190,28 @@
     function p2_action(callback, keyCode) {
         switch (keyCode) {
             case 'up': // UP
-                callback(player, jsnes.Controller.BUTTON_UP);
+                callback(send_player, jsnes.Controller.BUTTON_UP);
                 break;
             case 'down': // Down
-                callback(player, jsnes.Controller.BUTTON_DOWN);
+                callback(send_player, jsnes.Controller.BUTTON_DOWN);
                 break;
             case 'left': // Left
-                callback(player, jsnes.Controller.BUTTON_LEFT);
+                callback(send_player, jsnes.Controller.BUTTON_LEFT);
                 break;
             case 'right': // Right
-                callback(player, jsnes.Controller.BUTTON_RIGHT);
+                callback(send_player, jsnes.Controller.BUTTON_RIGHT);
                 break;
             case 'A': //77
-                callback(player, jsnes.Controller.BUTTON_A);
+                callback(send_player, jsnes.Controller.BUTTON_A);
                 break;
             case 'B':
-                callback(player, jsnes.Controller.BUTTON_B);
+                callback(send_player, jsnes.Controller.BUTTON_B);
                 break;
             case 'select': //
-                callback(player, jsnes.Controller.BUTTON_SELECT);
+                callback(send_player, jsnes.Controller.BUTTON_SELECT);
                 break;
             case 'start': //
-                callback(player, jsnes.Controller.BUTTON_START);
+                callback(send_player, jsnes.Controller.BUTTON_START);
                 break;
             default:
                 break;
