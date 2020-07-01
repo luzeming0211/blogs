@@ -1097,6 +1097,8 @@
     }
 
     $(document).ready(function () {
+        var browser = navigator.userAgent;
+        alert(browser.toString());
         initmenu();
         mobile_init();
         nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
