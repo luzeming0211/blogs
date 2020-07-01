@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -8,9 +7,11 @@
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes"/>
     <meta name="mobile-web-app-capable" content="yes">
-    <title>雪人兄弟</title>
+    <title>手机版</title>
     <link rel="stylesheet" href="{{asset('assets/nes_m')}}/css/font-awesome.min.css" type="text/css">
-    <link href="{{asset('assets/nes_m')}}/css/bootstrap.min.css" rel="stylesheet">
+    <link
+        href="{{asset('assets/nes_m')}}/css/bootstrap.min.css"
+        rel="stylesheet">
     <link rel="stylesheet" href="{{asset('assets/nes_m')}}/css/play-mobile-9d5feb7998bea67e6fe1489c45a3df36.css">
     <link rel="stylesheet" href="{{asset('assets/nes_m')}}/css/play_new.css">
 </head>
@@ -29,10 +30,10 @@
 </div>
 <div id="psp">
     <div class="interaction-area">
-        {{--        <div class="darrow" id="joystick_leftup"></div>--}}
-        {{--        <div class="darrow" id="joystick_leftdown"></div>--}}
-        {{--        <div class="darrow" id="joystick_rightdown"></div>--}}
-        {{--        <div class="darrow" id="joystick_rightup"></div>--}}
+        <div class="darrow" id="joystick_leftup"></div>
+        <div class="darrow" id="joystick_leftdown"></div>
+        <div class="darrow" id="joystick_rightdown"></div>
+        <div class="darrow" id="joystick_rightup"></div>
         <button id="joystick_left" class="arrow">▵</button>
         <button id="joystick_down" class="arrow">▵</button>
         <button id="joystick_up" class="arrow">▵</button>
@@ -40,13 +41,72 @@
     </div>
 </div>
 <div class="joystickpad">
+{{--    <div id="joystick_btn_menu" class="left pspbutton joystick_btn_op_1">菜单</div>--}}
     <div id="joystick_btn_choice" class="left pspbutton joystick_btn_op_1">选择</div>
     <div id="joystick_btn_start" class="left pspbutton joystick_btn_op_1">开始</div>
-    {{--    <div id="joystick_btn_X" class="xbutton joystick_btn_op_2">X</div>--}}
-    {{--    <div id="joystick_btn_Y" class="xbutton joystick_btn_op_2">Y</div>--}}
+    <div id="joystick_btn_X" class="xbutton joystick_btn_op_2">X</div>
+    <div id="joystick_btn_Y" class="xbutton joystick_btn_op_2">Y</div>
     <div id="joystick_btn_A" class="xbutton joystick_btn_op_2">A</div>
     <div id="joystick_btn_B" class="xbutton joystick_btn_op_2">B</div>
-    {{--    <div id="joystick_btn_AB" class="xbutton joystick_btn_op_2">AB</div>--}}
+    <div id="joystick_btn_AB" class="xbutton joystick_btn_op_2">AB</div>
+</div>
+<div class="tab-pane-bg" style="z-index:99;display:none">
+    <header class="tenant-model-header">
+        <span id="closeChatModel">×</span>
+    </header>
+    <div class="tab-pane chat">
+        <ul class="messages" style="bottom: 36px;">
+
+
+        </ul>
+        <div class="chat-footer">
+            <div class="chat-footer-box">
+                <input autocomplete="off" id="word" class="chat-input" placeholder="回车发送输入的消息" style="" maxlength="140">
+                <i id="mobile_send" class="fa fa-reply" aria-hidden="true"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <ul class="menu">
+        <li><a class="item item-0 menu-toggle"><i class="fa fa-times"></i>
+                <p class="menutext"></p></a></li>
+        <li><a id="menu_btn_cheat" class="item item-1"><i class="fa fa-hand-pointer-o"></i>
+                <p class="menutext">金手指</p></a></li>
+        <li><a id="menu_btn_full" sc="1" class="item item-2"><i class="fa fa-window-maximize"></i>
+                <p class="menutext">全屏</p></a></li>
+        <li><a id="menu_btn_reload" class="item item-3"><i class="fa fa-refresh"></i>
+                <p class="menutext">重载</p></a></li>
+        <li><a id="menu_btn_saverom" class="item item-5"><i class="fa fa-save"></i>
+                <p class="menutext">保存</p></a></li>
+        <li><a id="menu_btn_chat" class="item item-5"><i class="fa fa-wechat"></i>
+                <p class="menutext">聊天</p></a></li>
+        <li><a href="/" class="item item-7"><i class="fa fa-power-off"></i>
+                <p class="menutext">退出</p></a></li>
+    </ul>
+</div>
+<div class="tenant-model-content" id="cheatscontent" style="display:none;background-color: rgba(34,34,34);">
+    <header class="tenant-model-header">
+        <span class="closebtn" id="closecheatsModel">×</span>
+    </header>
+    <div class="tenant-model-body">
+        <div class="cheatlistcontain" style="height:150px;overflow-y:auto">
+            <ul id="cheatlist">
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="tenant-model-content" id="saveContent">
+    <header class="tenant-model-header">
+        <span id="closeModel">×</span>
+    </header>
+    <div class="tenant-model-body">
+        <div id="list">
+            <ul id="savelist">
+                <div id="qrcode"></div>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <div id="tips"></div>
@@ -55,8 +115,8 @@
         src="{{asset('assets/nes_m')}}/js/play-mobile-b4042d918f463eaaf846b77239552aca.js"></script>
 <script type="text/javascript"
         src="{{asset('assets/nes_m')}}/js/play-mobile-9e6418b070162fc74f79a769f8a40c18.js"></script>
-<script src="{{asset('assets/nes')}}/m_p1_p2.js"></script>
-<script type="text/javascript" src="{{asset('assets/common')}}/js/jquery.qrcode.min.js"></script>
+<script type="text/javascript" src="{{asset('assets/nes_m')}}/js/play-10e0778a0b61417ba80b58197e44c5ff.js"></script>
+
 <script>
     function wScreen1(type) {
         var realWidth = $(window).width();
@@ -130,31 +190,94 @@
             closemenu();
             $('.tab-pane-bg').show();
         });
+
+        function fullScreen() {
+            var element = document.documentElement;
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.msRequestFullscreen) {
+                element.msRequestFullscreen();
+            } else if (element.mozRequestFullScreen) {
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) {
+                element.webkitRequestFullscreen();
+            }
+        }
+
+        function exitFullscreen() {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            }
+        }
+
+        $('#menu_btn_full').click(function () {
+            closemenu();
+            var sc = $('#menu_btn_full').attr("screen");
+            if (sc == '1') {
+                $('#menu_btn_full').attr("screen", "0");
+                var realWidth = $(window).width();
+                var realHight = $(window).height();
+                var nesWidth = realWidth * (240 / 256);
+                $(".nes-screen").css({
+                    "width": nesWidth + 'px',
+                    "height": realWidth + 'px',
+                    "top": (realHight - nesWidth) / 2 + 'px',
+                    "left": ((realWidth - nesWidth) / 2) + 'px'
+                });
+                $('#menu_btn_full p').text('全屏');
+            } else {
+                $('#menu_btn_full').attr("screen", "1");
+                var realWidth = $(window).width();
+                var realHight = $(window).height();
+                var nesWidth = realWidth * (240 / 256);
+                $('.nes-screen').css({
+                    "width": $(window).height() + "px",
+                    "top": (realHight - nesWidth) / 2 + 'px',
+                    "left": ((realWidth - realHight) / 2) + 'px'
+                });
+                $('#menu_btn_full p').text('缩小');
+            }
+        });
+        $('#closecheatsModel').click(function () {
+            $('#cheatscontent').hide();
+        });
+        $('.menu-toggle').on('click', function () {
+            closemenu();
+        });
     }
 
     function closemenu() {
         $('#joystick_btn_menu').removeClass('active');
         $('.menu').hide();
     }
-    $(document).ready(function () {
-        // initmenu();
-        // mobile_init();
-        // nes_load_url("nes-canvas", rom_url);
-    });
+
 </script>
+<script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
+<script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
+<script type="text/javascript" src="{{asset('assets/common')}}/js/jquery.qrcode.min.js"></script>
 <script>
     var userid = '{{ $userid }}';
     var username = '{{ $username }}';
     var room_id = '{{ $room_id }}';
     var rom_url = '{{ $nes->game }}';
     var join_url = '{{ $url }}';
-    var player ='{{ $player }}';
-    // $('#qrcode').qrcode(join_url);
+
+    $('#qrcode').qrcode(join_url);
+
+
+
 
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
     ws.onopen = function () {
         send_conn();
+
     };
 
     ws.onmessage = function (evt) {
@@ -165,11 +288,9 @@
             key_code = info.key_code;
             type = info.type;
             if (type == 'keydown') {
-                console.log(key_code);
                 p2_action(nes.buttonDown, key_code);
             }
             if (type == 'keyup') {
-                console.log(key_code);
                 p2_action(nes.buttonUp, key_code);
             }
             if (type == 'message') {
@@ -187,6 +308,7 @@
     };
 
     function p2_action(callback, keyCode) {
+        var player = 2;
         switch (keyCode) {
             case 'up': // UP
                 callback(player, jsnes.Controller.BUTTON_UP);
@@ -206,10 +328,10 @@
             case 'B':
                 callback(player, jsnes.Controller.BUTTON_B);
                 break;
-            case 'select': //
+            case 66: //
                 callback(player, jsnes.Controller.BUTTON_SELECT);
                 break;
-            case 'start': //
+            case 13: //
                 callback(player, jsnes.Controller.BUTTON_START);
                 break;
             default:
@@ -218,7 +340,7 @@
     }
 
     ws.onclose = function () {
-        console.log("连接已关闭...");
+        alert("连接已关闭...");
     };
     window.onbeforeunload = function(event) {
         ws.close();
@@ -230,6 +352,22 @@
             username: username,
             event: 'message',
             type: 'conn',
+        };
+        var data = {
+            0: 'message',
+            1: para,
+        };
+        var data_str = JSON.stringify(data);
+        ws.send(data_str);
+    }
+
+    function send_leave(type) {
+        var para = {
+            room_id: room_id,
+            userid: userid,
+            username: username,
+            event: 'message',
+            type: type,
         };
         var data = {
             0: 'message',

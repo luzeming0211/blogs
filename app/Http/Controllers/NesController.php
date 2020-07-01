@@ -33,13 +33,11 @@ class NesController extends Controller
         $room_str = 'game:room_' . $room_id;
         Redis::set($room_str, $userid);
         $url = env('APP_URL') . '/nes/' . $room_id . '/' . $id;
-//        ld($url);
+        ld($url);
         $ws_host = getWxDomain();
-        $show_page = 'room.p1';
-        if (isMobile()) {
-            $show_page = 'room.m.p1';
-        }
-        return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host', 'url'));
+        $show_page = 'room.m.p1';
+        $player = 1;
+        return view($show_page, compact('player','userid', 'username', 'room_id', 'nes', 'ws_host', 'url'));
     }
 
     public function room($room_id, $id)
@@ -66,11 +64,10 @@ class NesController extends Controller
         }
 
         $ws_host = getWxDomain();
-        $show_page = 'room.p2';
-        if (isMobile()) {
-            $show_page = 'room.m.p2';
-        }
-        return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host'));
+        $show_page = 'room.m.p2';
+        $player = 2;
+        $url = '';
+        return view($show_page, compact('player','userid', 'username', 'room_id', 'nes', 'ws_host','url'));
     }
 
 

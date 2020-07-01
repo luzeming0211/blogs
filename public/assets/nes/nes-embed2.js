@@ -174,7 +174,7 @@ function nes_init(canvas_id) {
     script_processor.onaudioprocess = audio_callback;
     script_processor.connect(audio_ctx.destination);
 
-    makeImg(canvas);
+    // makeImg(canvas);
 
 }
 
