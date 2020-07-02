@@ -1,4 +1,31 @@
 var dbtool = new dbtool();
+var joydirmap = new Map();
+joydirmap.set("left", "up");
+joydirmap.set("down", "left");
+joydirmap.set("right", "down");
+joydirmap.set("up", "right");
+joydirmap.set("leftup", "rightup");
+joydirmap.set("leftdown", "leftup");
+joydirmap.set("rightup", "rightdown");
+joydirmap.set("rightdown", "leftdown");
+var player = 1,
+    player2 = 2,
+    gameid;
+Date.prototype.Format = function (fmt) {
+    var o = {
+        "M+": this.getMonth() + 1,
+        "d+": this.getDate(),
+        "h+": this.getHours(),
+        "m+": this.getMinutes(),
+        "s+": this.getSeconds(),
+        "q+": Math.floor((this.getMonth() + 3) / 3),
+        "S": this.getMilliseconds()
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o) if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt
+};
+
 function dbtool() {
     var fcdb = null;
     var storeName = 'nesjson';
@@ -15,7 +42,7 @@ function dbtool() {
             addNesInfo.onsuccess = function (e) {
                 args[3](nesJsonid, e.target.result)
             }
-        };
+        }
     };
     this.saveDateCall = function () {
         this.operate(arguments, this.saveDate)
@@ -36,8 +63,13 @@ function dbtool() {
                 var db = e.target.result;
                 if (!db.objectStoreNames.contains(storeName)) {
                     try {
-                        var objectStore = db.createObjectStore(storeName, {keyPath: 'id', autoIncrement: true});
-                        objectStore.createIndex('nameIndex', 'name', {unique: false})
+                        var objectStore = db.createObjectStore(storeName, {
+                            keyPath: 'id',
+                            autoIncrement: true
+                        });
+                        objectStore.createIndex('nameIndex', 'name', {
+                            unique: false
+                        })
                     } catch (e) {
                         console.log(e)
                     }
@@ -94,95 +126,6 @@ function dbtool() {
     }
 }
 
-var nes = new jsnes.NES({
-    onFrame: function (framebuffer_24) {
-        for (var i = 0; i < FRAMEBUFFER_SIZE; i++) framebuffer_u32[i] = 0xFF000000 | framebuffer_24[i]
-    }, onAudioSample: function (l, r) {
-        audio_samples_L[audio_write_cursor] = l;
-        audio_samples_R[audio_write_cursor] = r;
-        audio_write_cursor = (audio_write_cursor + 1) & SAMPLE_MASK
-    },
-});
-
-function onAnimationFrame() {
-    window.requestAnimationFrame(onAnimationFrame);
-    for (var i = 0; i < gamecheatList.length; i++) {
-        if (gamecheatList[i].status == true) {
-            setmemValue(gamecheatList[i].address, gamecheatList[i].values)
-        }
-    }
-    image.data.set(framebuffer_u8);
-    canvas_ctx.putImageData(image, 0, 0);
-    nes.frame()
-}
-
-function audio_remain() {
-    return (audio_write_cursor - audio_read_cursor) & SAMPLE_MASK
-}
-
-var audiocall = false;
-
-function audio_callback(event) {
-    audiocall = true;
-    var dst = event.outputBuffer;
-    var len = dst.length;
-    if (audio_remain() < AUDIO_BUFFERING) nes.frame();
-    var dst_l = dst.getChannelData(0);
-    var dst_r = dst.getChannelData(1);
-    for (var i = 0; i < len; i++) {
-        var src_idx = (audio_read_cursor + i) & SAMPLE_MASK;
-        dst_l[i] = audio_samples_L[src_idx];
-        dst_r[i] = audio_samples_R[src_idx]
-    }
-    audio_read_cursor = (audio_read_cursor + len) & SAMPLE_MASK
-}
-
-function keyboard(callback, event, stat) {
-    if (localkeybords[event.keyCode]) {
-        var h = localkeybords[event.keyCode][0] - 1;
-        var l = localkeybords[event.keyCode][1] - 2;
-        var player = l + 1;
-        var btn = tablecontroller[l][h];
-        if (btn != 8 && btn != 9) {
-            callback(player, btn)
-        } else if (btn == 8) {
-            clearInterval(selfinterval);
-            if (stat == 1) {
-                nesButtonValue({
-                    keyCode: jsnes.Controller.BUTTON_A,
-                    keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_A]
-                }, player);
-                nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-                selfinterval = setInterval(function () {
-                    nesButtonValue({
-                        keyCode: jsnes.Controller.BUTTON_A,
-                        keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_A]
-                    }, player)
-                }, 50)
-            } else {
-                nesButtonValue({keyCode: jsnes.Controller.BUTTON_A, keyValue: 0x40}, player)
-            }
-        } else if (btn == 9) {
-            clearInterval(selfinterval);
-            if (stat == 1) {
-                nesButtonValue({
-                    keyCode: jsnes.Controller.BUTTON_B,
-                    keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_B]
-                }, player);
-                nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-                selfinterval = setInterval(function () {
-                    nesButtonValue({
-                        keyCode: jsnes.Controller.BUTTON_B,
-                        keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_B]
-                    }, player)
-                }, 50)
-            } else {
-                nesButtonValue({keyCode: jsnes.Controller.BUTTON_B, keyValue: 0x40}, player)
-            }
-        }
-    }
-}
-
 var audio_ctx;
 
 function nes_init(canvas_id) {
@@ -194,11 +137,7 @@ function nes_init(canvas_id) {
     var buffer = new ArrayBuffer(image.data.length);
     framebuffer_u8 = new Uint8ClampedArray(buffer);
     framebuffer_u32 = new Uint32Array(buffer);
-    window.AudioContext = window.webkitAudioContext || window.AudioContext;
-    audio_ctx = new window.AudioContext();
-    var script_processor = audio_ctx.createScriptProcessor(AUDIO_BUFFERING, 0, 2);
-    script_processor.onaudioprocess = audio_callback;
-    script_processor.connect(audio_ctx.destination)
+    speakers.start()
 }
 
 var rtfid = null;
@@ -218,7 +157,11 @@ function nes_load_url(canvas_id, path) {
     var req = new XMLHttpRequest();
     req.open("GET", path);
     req.overrideMimeType("text/plain; charset=x-user-defined");
-    req.onerror = () => console.log(`Error loading ${path}:${req.statusText}`);
+    req.onerror = () => console.log(`Error loading $ {
+        path
+    }: $ {
+        req.statusText
+    }`);
     req.onload = function () {
         if (this.status === 200) {
             nes_boot(this.responseText)
@@ -302,23 +245,35 @@ function hScreen() {
     })
 }
 
-function wScreen() {
+function initcanvas() {
     var realWidth = $(window).width();
     var realHight = $(window).height();
     var nesWidth = realWidth * (240 / 256);
-    $(".nes-screen").css({
+    $("#nes-canvas").addClass("canvas-screen");
+    $("#nes-canvas").css({
         "width": nesWidth + 'px',
         "height": realWidth + 'px',
         "top": (realHight - nesWidth) / 2 + 'px',
         "left": ((realWidth - nesWidth) / 2) + 'px'
     });
-    $(".nes-screen").css('transform', 'rotate(90deg)');
-    $(".nes-screen").css('transform-origin', '50% 50%');
+    $("#nes-canvas").css('transform', 'rotate(90deg)');
+    $("#nes-canvas").css('transform-origin', '50% 50%');
+}
+
+function wScreen() {
+    var realWidth = $(window).width();
+    var realHight = $(window).height();
+    var nesWidth = realWidth * (240 / 256);
     joystickInit(realWidth, nesWidth, realHight, 's');
     var btnsize = realWidth / 5;
     var btnleft = (realHight + nesWidth) / 2;
     if ((btnleft + btnsize * 2 + 10) > realHight) {
         btnleft = btnleft - ((btnleft + btnsize * 2 + 15) - realHight)
+    } else {
+        btnleft = btnleft + (realHight - btnleft - btnsize * 2 - 5) / 2 - 5;
+    }
+    if ((btnleft + btnsize + btnmargin) > realHight) {
+        btnleft = realHight - btnsize - btnmargin
     }
     var btntop = realWidth - btnsize * 2 - 20;
     var btnmargin = 5;
@@ -367,7 +322,11 @@ function wScreen() {
         top: btnleft + btnsize + btnmargin + 'px',
         right: btntop + btnsize + btnmargin + 'px'
     });
-    $('.tab-pane-bg').css({"height": realHight - 130 + 'px', "width": realWidth + 'px', bottom: '20px'});
+    $('.tab-pane-bg').css({
+        "height": realHight - 130 + 'px',
+        "width": realWidth + 'px',
+        bottom: '20px'
+    });
     $(".messages").css('height', realHight - 220 + 'px')
 }
 
@@ -379,11 +338,14 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
     var minwidth = 150;
     var joyarea = minwidth;
     var minmargin = 5;
+    var minbtnmargin = 15;
     var joymargin = 0;
     var joyopacity = 0.8;
     if ((realHight - nesWidth) / 2 > (minwidth - 10)) {
         joyarea = (realHight - nesWidth - minmargin) / 2;
-        joymargin = 0;
+        if (joyarea > realWidth / 2 - 5)
+            joyarea = realWidth / 2 - 5;
+        joymargin = 10;
         joyopacity = 1
     }
     var joysizeW = joyarea / 3 - minmargin;
@@ -415,7 +377,7 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
             'height': joyarea + 'px',
             'top': (realHight - joyarea) + 'px',
             'left': joymargin + 'px',
-            'opacity': joyopacity
+            'opacity': 0.8
         })
     } else {
         if (toppx > (joystickSize + 10)) {
@@ -426,7 +388,7 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
             'height': joyarea + 'px',
             'top': joymargin + 'px',
             'left': joymargin + 'px',
-            'opacity': joyopacity
+            'opacity': 0.8
         });
         $('#joystick_btn_choice').css({
             'transform': 'rotate(90deg)',
@@ -435,7 +397,7 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
             "height": joysizeH / 2 + 'px',
             "line-height": joysizeH / 2 + 'px',
             top: (realHight - nesWidth) / 4 - minmargin + 'px',
-            left: joyarea + minmargin + 'px'
+            left: joyarea + minbtnmargin + 'px'
         });
         $('#joystick_btn_start').css({
             'transform': 'rotate(90deg)',
@@ -444,7 +406,7 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
             "height": joysizeH / 2 + 'px',
             "line-height": joysizeH / 2 + 'px',
             top: (realHight - nesWidth) / 4 - minmargin + 'px',
-            left: (joyarea + joysizeH / 2) + minmargin * 2 + 'px'
+            left: (joyarea + joysizeH / 2) + minbtnmargin * 2 + 'px'
         });
         $('#joystick_btn_menu').css({
             'transform': 'rotate(90deg)',
@@ -453,7 +415,7 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
             "height": joysizeH / 2 + 'px',
             "line-height": joysizeH / 2 + 'px',
             top: (realHight - nesWidth) / 4 - minmargin + 'px',
-            left: joyarea + joysizeH + minmargin * 3 + 'px'
+            left: joyarea + joysizeH + minbtnmargin * 3 + 'px'
         });
         $('#joystick_btn_home').css({
             'transform': 'rotate(90deg)',
@@ -471,190 +433,213 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
             left: joyarea + joysizeH + joysizeH / 2 + minmargin * 4 + 'px'
         })
     }
-    $('.interaction').css({'font-size': joysizeW / 3 + 'px'});
+    $('.interaction').css({
+        'font-size': joysizeW / 3 + 'px'
+    });
     $('.arrow').each(function (index) {
-        $(this).css({'width': joysizeW + 'px', 'height': joysizeH + 'px'});
+        $(this).css({
+            'width': joysizeW + 'px',
+            'height': joysizeH + 'px'
+        });
         if (index == 0 || index == 3) {
-            $(this).css({'left': joyleft + 'px'})
+            $(this).css({
+                'left': joyleft + 'px'
+            })
         } else {
-            $(this).css({'top': joytop + 'px'})
+            $(this).css({
+                'top': joytop + 'px'
+            })
         }
     });
     $('.darrow').each(function (index) {
-        $(this).css({'width': joysizeW + 'px', 'height': joysizeH + 'px'});
+        $(this).css({
+            'width': joysizeW + 'px',
+            'height': joysizeH + 'px'
+        });
         if (index == 0) {
-            $(this).css({'left': joyleft + joysizeW + 'px'})
+            $(this).css({
+                'left': joyleft + joysizeW + 'px'
+            })
         } else if (index == 1) {
-            $(this).css({'top': joymargin + 'px'})
+            $(this).css({
+                'top': joymargin + 'px'
+            })
         } else if (index == 2) {
-            $(this).css({'left': joymargin + 'px', 'top': joytop + joysizeW + 'px'})
+            $(this).css({
+                'left': joymargin + 'px',
+                'top': joytop + joysizeW + 'px'
+            })
         } else {
-            $(this).css({'left': joyleft + joysizeW + 'px', 'top': joytop + joysizeW + 'px'})
+            $(this).css({
+                'left': joyleft + joysizeW + 'px',
+                'top': joytop + joysizeW + 'px'
+            })
         }
     });
     var leftpx = joystickSize * (2 / 3)
 }
 
 function touchInit(type) {
-    $('.interaction-area').bind('touchstart gesturestart', function (e) {
-        handleDir(e, type);
-        e.preventDefault()
-    });
-    $('.interaction-area').bind('touchmove', function (e) {
-        handleDir(e, type)
-    });
-    $('#joystick_btn_menu').bind('touchstart gesturestart touchmove', function (e) {
-        $('#joystick_btn_menu').addClass('active');
-        e.preventDefault()
-    });
-    $('#joystick_btn_menu').bind('touchend', function (e) {
-        $('#joystick_btn_menu').removeClass('active');
-        $(".menu").show();
-        e.preventDefault()
-    });
-    $('#menu_btn_saverom').bind('touchend', function (e) {
-        closemenu();
-        getNesList(gameid);
-        e.preventDefault()
-    });
-    $('.interaction-area').bind('touchend', function (e) {
-        $('#joystick_down').removeClass('active');
-        $('#joystick_left').removeClass('active');
-        $('#joystick_up').removeClass('active');
-        $('#joystick_right').removeClass('active');
-        send_m_key('left','keyup');
-        send_m_key('up','keyup');
-        send_m_key('right','keyup');
-        send_m_key('down','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_LEFT}, player);
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_UP}, player);
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_RIGHT}, player);
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_DOWN}, player)
-    });
-    $('#joystick_btn_start').bind('touchstart gesturestart touchmove', function (e) {
-        $('#joystick_btn_start').addClass('active');
-        send_m_key('start','keydown');
-        nesButtonDown({keyCode: jsnes.Controller.BUTTON_START}, player);
-        e.preventDefault()
-    });
-    $('#joystick_btn_start').bind('touchend', function (e) {
-        $('#joystick_btn_start').removeClass('active');
-        deleteData();
-        send_m_key('start','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_START}, player);
-        e.preventDefault();
-        iosAudioInit()
-    });
-    $('#joystick_btn_choice').bind('touchstart gesturestart touchmove', function (e) {
-        $('#joystick_btn_choice').addClass('active');
-        send_m_key('choice','keydown');
-        nesButtonDown({keyCode: jsnes.Controller.BUTTON_SELECT}, player);
-        e.preventDefault()
-    });
-    $('#joystick_btn_choice').bind('touchend', function (e) {
-        $('#joystick_btn_choice').removeClass('active');
-        send_m_key('choice','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_SELECT}, player);
-        e.preventDefault()
-    });
-    // luzeming
-    $('#joystick_btn_A').bind('touchstart gesturestart touchmove', function (e) {
-        send_m_key('A','keydown');
-        touchAB(e, false, 'A');
-        e.preventDefault()
-    });
-    $('#joystick_btn_A').bind('touchend', function (e) {
-        $('#joystick_btn_A').removeClass('active');
-        send_m_key('A','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-        e.preventDefault()
-    });
-    $('#joystick_btn_B').bind('touchstart gesturestart touchmove', function (e) {
-        send_m_key('B','keydown');
-        touchAB(e, false, 'B');
-        e.preventDefault()
-    });
-    $('#joystick_btn_B').bind('touchend', function (e) {
-        $('#joystick_btn_B').removeClass('active');
-        send_m_key('B','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-        e.preventDefault()
-    });
-    // $('#joystick_btn_AB').bind('touchstart gesturestart touchmove', function (e) {
-    //     touchAB(e, false, 'AB');
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_AB').bind('touchend', function (e) {
-    //     $('#joystick_btn_AB').removeClass('active');
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_X').bind('touchstart gesturestart touchmove', function (e) {
-    //     touchAB(e, true, 'A');
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_X').bind('touchend', function (e) {
-    //     $('#joystick_btn_X').removeClass('active');
-    //     clearInterval(interval);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_Y').bind('touchstart gesturestart touchmove', function (e) {
-    //     touchAB(e, true, 'B');
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_Y').bind('touchend', function (e) {
-    //     $('#joystick_btn_Y').removeClass('active');
-    //     clearInterval(interval);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-    //     e.preventDefault()
-    // })
+    $('.interaction-area').bind('touchstart gesturestart',
+        function (e) {
+            handleDir(e, type);
+            e.preventDefault()
+        });
+    $('.interaction-area').bind('touchmove',
+        function (e) {
+            handleDir(e, type)
+        });
+    $('#joystick_btn_menu').bind('touchstart gesturestart touchmove',
+        function (e) {
+            $('#joystick_btn_menu').addClass('active');
+            e.preventDefault()
+        });
+    $('#joystick_btn_menu').bind('touchend',
+        function (e) {
+            $('#joystick_btn_menu').removeClass('active');
+            $(".menu").show();
+            e.preventDefault()
+        });
+    $('#menu_btn_saverom').bind('touchend',
+        function (e) {
+            closemenu();
+            getNesList(gameid);
+            e.preventDefault()
+        });
+    $('.interaction-area').bind('touchend',
+        function (e) {
+            $('#joystick_down').removeClass('active');
+            $('#joystick_left').removeClass('active');
+            $('#joystick_up').removeClass('active');
+            $('#joystick_right').removeClass('active');
+            syncbtnup("BUTTON_UP");
+            syncbtnup("BUTTON_LEFT");
+            syncbtnup("BUTTON_RIGHT");
+            syncbtnup("BUTTON_DOWN");
+        });
+    $('#joystick_btn_start').bind('touchstart gesturestart touchmove',
+        function (e) {
+            $('#joystick_btn_start').addClass('active');
+            syncbtndown("BUTTON_START");
+            e.preventDefault()
+        });
+    $('#joystick_btn_start').bind('touchend',
+        function (e) {
+            $('#joystick_btn_start').removeClass('active');
+            syncbtnup("BUTTON_START");
+            e.preventDefault();
+            //iosAudioInit();
+        });
+    $('#joystick_btn_choice').bind('touchstart gesturestart touchmove',
+        function (e) {
+            $('#joystick_btn_choice').addClass('active');
+            syncbtndown("BUTTON_SELECT");
+            e.preventDefault()
+        });
+    $('#joystick_btn_choice').bind('touchend',
+        function (e) {
+            $('#joystick_btn_choice').removeClass('active');
+            syncbtnup("BUTTON_SELECT");
+            e.preventDefault()
+        });
+    $('#joystick_btn_A').bind('touchstart gesturestart touchmove',
+        function (e) {
+            syncbtndown("BUTTON_A");
+            e.preventDefault()
+        });
+    $('#joystick_btn_A').bind('touchend',
+        function (e) {
+            $('#joystick_btn_A').removeClass('active');
+            syncbtnup("BUTTON_A");
+            e.preventDefault()
+        });
+    $('#joystick_btn_B').bind('touchstart gesturestart touchmove',
+        function (e) {
+            syncbtndown("BUTTON_B");
+            e.preventDefault()
+        });
+    $('#joystick_btn_B').bind('touchend',
+        function (e) {
+            $('#joystick_btn_B').removeClass('active');
+            syncbtnup("BUTTON_B");
+            e.preventDefault()
+        });
+    $('#joystick_btn_AB').bind('touchstart gesturestart touchmove',
+        function (e) {
+            syncbtndown("BUTTON_A");
+            syncbtndown("BUTTON_B");
+            e.preventDefault()
+        });
+    $('#joystick_btn_AB').bind('touchend',
+        function (e) {
+            $('#joystick_btn_AB').removeClass('active');
+            syncbtnup("BUTTON_A");
+            syncbtnup("BUTTON_B");
+            e.preventDefault()
+        });
+    $('#joystick_btn_X').bind('touchstart gesturestart touchmove',
+        function (e) {
+            syncbtndown("BUTTON_DA");
+            e.preventDefault()
+        });
+    $('#joystick_btn_X').bind('touchend',
+        function (e) {
+            $('#joystick_btn_X').removeClass('active');
+            syncbtnup("BUTTON_DA");
+            e.preventDefault()
+        });
+    $('#joystick_btn_Y').bind('touchstart gesturestart touchmove',
+        function (e) {
+            syncbtndown("BUTTON_DB");
+            e.preventDefault()
+        });
+    $('#joystick_btn_Y').bind('touchend',
+        function (e) {
+            $('#joystick_btn_Y').removeClass('active');
+            syncbtnup("BUTTON_DB");
+            e.preventDefault()
+        })
 }
 
 function touchControll(key, type) {
-    var value = type == 'down' ? 0x41 : 0x40;
-    var fvalue = type == 'down' ? 0x40 : 0x41;
-    var key_type = type == 'down' ? 'keydown': 'keyup';
-    send_m_key(key,key_type);
+    //var value = type == 'down' ? 0x41: 0x40;
+    //var fvalue = type == 'down' ? 0x40: 0x41;
     switch (key) {
-        case'left':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
+        case 'left':
+            syncbtndown("BUTTON_LEFT");
             break;
-        case'right':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
+        case 'right':
+            syncbtndown("BUTTON_RIGHT");
             break;
-        case'up':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
+        case 'up':
+            syncbtndown("BUTTON_UP");
             break;
-        case'down':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
+        case 'down':
+            syncbtndown("BUTTON_DOWN");
             break;
-        case'leftup':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, fvalue);
+        case 'leftup':
+            syncbtndown("BUTTON_UP");
+            syncbtndown("BUTTON_LEFT");
+            syncbtnup("BUTTON_DOWN");
+            syncbtnup("BUTTON_RIGHT");
             break;
-        case'rightup':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, fvalue);
+        case 'rightup':
+            syncbtndown("BUTTON_UP");
+            syncbtndown("BUTTON_RIGHT");
+            syncbtnup("BUTTON_DOWN");
+            syncbtnup("BUTTON_LEFT");
             break;
-        case'leftdown':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, fvalue);
+        case 'leftdown':
+            syncbtndown("BUTTON_DOWN");
+            syncbtndown("BUTTON_LEFT");
+            syncbtnup("BUTTON_UP");
+            syncbtnup("BUTTON_RIGHT");
             break;
-        case'rightdown':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, fvalue);
+        case 'rightdown':
+            syncbtndown("BUTTON_DOWN");
+            syncbtndown("BUTTON_RIGHT");
+            syncbtnup("BUTTON_UP");
+            syncbtnup("BUTTON_LEFT");
             break
     }
 }
@@ -667,43 +652,73 @@ function touchAB(e, db, btn) {
         if (db) {
             $('#joystick_btn_X').addClass('active');
             nesButtonValue({
-                keyCode: jsnes.Controller.BUTTON_A,
-                keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_A]
-            }, player);
-            nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-            selfinterval = setInterval(function () {
-                nesButtonValue({
                     keyCode: jsnes.Controller.BUTTON_A,
                     keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_A]
-                }, player)
-            }, 50)
+                },
+                player);
+            nesButtonUp({
+                    keyCode: jsnes.Controller.BUTTON_B
+                },
+                player);
+            selfinterval = setInterval(function () {
+                    nesButtonValue({
+                            keyCode: jsnes.Controller.BUTTON_A,
+                            keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_A]
+                        },
+                        player)
+                },
+                50)
         } else {
             $('#joystick_btn_A').addClass('active');
-            nesButtonDown({keyCode: jsnes.Controller.BUTTON_A}, player);
-            nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player)
+            nesButtonDown({
+                    keyCode: jsnes.Controller.BUTTON_A
+                },
+                player);
+            nesButtonUp({
+                    keyCode: jsnes.Controller.BUTTON_B
+                },
+                player)
         }
     } else if (btn == 'B') {
         if (db) {
             $('#joystick_btn_Y').addClass('active');
-            nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
+            nesButtonUp({
+                    keyCode: jsnes.Controller.BUTTON_A
+                },
+                player);
             nesButtonValue({
-                keyCode: jsnes.Controller.BUTTON_B,
-                keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_B]
-            }, player);
-            selfinterval = setInterval(function () {
-                nesButtonValue({
                     keyCode: jsnes.Controller.BUTTON_B,
                     keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_B]
-                }, player)
-            }, 50)
+                },
+                player);
+            selfinterval = setInterval(function () {
+                    nesButtonValue({
+                            keyCode: jsnes.Controller.BUTTON_B,
+                            keyValue: 0x81 - nes.controllers[player].state[jsnes.Controller.BUTTON_B]
+                        },
+                        player)
+                },
+                50)
         } else {
             $('#joystick_btn_B').addClass('active');
-            nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-            nesButtonDown({keyCode: jsnes.Controller.BUTTON_B}, player)
+            nesButtonUp({
+                    keyCode: jsnes.Controller.BUTTON_A
+                },
+                player);
+            nesButtonDown({
+                    keyCode: jsnes.Controller.BUTTON_B
+                },
+                player)
         }
     } else if (btn == 'AB') {
-        nesButtonDown({keyCode: jsnes.Controller.BUTTON_A}, player);
-        nesButtonDown({keyCode: jsnes.Controller.BUTTON_B}, player)
+        nesButtonDown({
+                keyCode: jsnes.Controller.BUTTON_A
+            },
+            player);
+        nesButtonDown({
+                keyCode: jsnes.Controller.BUTTON_B
+            },
+            player)
     }
 }
 
@@ -758,52 +773,52 @@ function saveAndload(type, id, lie, dbid, dbid2) {
         nesInfo.name = id + 'info';
         nesInfo.pic = canvas.toDataURL("image/jpeg", 0.2);
         nesInfo.time = new Date().Format("yyyy-MM-dd hh:mm:ss");
-        dbtool.saveDateCall(nesj, nesInfo, dbid2, function (id1, id2) {
-            var savename = $(lie).parent().children(".name").text();
-            $(lie).parent().empty().append("<img class='avatar' src='" + nesInfo.pic + "'></img> <span class='name'>" + savename + "</span> <span class='time'>" + nesInfo.time + "</span><button type='button'  onclick='saveAndload(\"1\"," + id1 + " )' class='right btn btn-success'>读取</button><button type='button' class='right2 btn btn-success' onclick='saveAndload(\"0\",\"" + id + "\",this," + id1 + "," + id2 + " )'>存档</button>");
-        })
+        dbtool.saveDateCall(nesj, nesInfo, dbid2,
+            function (id1, id2) {
+                var savename = $(lie).parent().children(".name").text();
+                $(lie).parent().empty().append("<img class='avatar' src='" + nesInfo.pic + "'></img> <span class='name'>" + savename + "</span> <span class='time'>" + nesInfo.time + "</span><button type='button'  onclick='saveAndload(\"1\"," + id1 + " )' class='right btn btn-success'>璇诲彇</button><button type='button' class='right2 btn btn-success' onclick='saveAndload(\"0\",\"" + id + "\",this," + id1 + "," + id2 + " )'>瀛樻。</button>")
+            })
     } else {
-        dbtool.loadDataCall(id, function (d) {
-            console.log(id);
-            if (d) {
-                nes.fromJSON(d);
-            }
-        })
+        dbtool.loadDataCall(id,
+            function (d) {
+                console.log(id);
+                if (d) {
+                    nes.fromJSON(d)
+                }
+            })
     }
 }
 
 function getNesList(id) {
-    dbtool.getNesListCall(id + 'info', function (neslist) {
-        $("#savelist").empty();
-        if (neslist && neslist.length > 0) {
-            for (var i = 0; i < neslist.length; i++) {
-                $("#savelist").append("<li><img class='avatar' src='" + neslist[i].pic + "'></img> <span class='name'>存档[" + (i + 1) + "]</span> <span class='time'>" + neslist[i].time + "</span><button type='button'  onclick='saveAndload(\"1\"," + neslist[i].nesid + " )' class='right btn btn-success'>读取</button><button type='button' class='right2 btn btn-success' onclick='saveAndload(\"0\",\"" + id + "\",this," + neslist[i].nesid + "," + neslist[i].id + " )'>存档</button></li>")
+    dbtool.getNesListCall(id + 'info',
+        function (neslist) {
+            $("#savelist").empty();
+            if (neslist && neslist.length > 0) {
+                for (var i = 0; i < neslist.length; i++) {
+                    $("#savelist").append("<li><img class='avatar' src='" + neslist[i].pic + "'></img> <span class='name'>瀛樻。[" + (i + 1) + "]</span> <span class='time'>" + neslist[i].time + "</span><button type='button'  onclick='saveAndload(\"1\"," + neslist[i].nesid + " )' class='right btn btn-success'>璇诲彇</button><button type='button' class='right2 btn btn-success' onclick='saveAndload(\"0\",\"" + id + "\",this," + neslist[i].nesid + "," + neslist[i].id + " )'>瀛樻。</button></li>")
+                }
             }
-        }
-        if (neslist.length < 3) {
-            for (var i = neslist.length; i < 3; i++) {
-                $("#savelist").append("<li><div class='avatar'></div> <span class='name'>存档[" + (i + 1) + "]</span> <span class='time'>未存档</span><button type='button' class='right btn btn-success' onclick='saveAndload(\"0\",\"" + id + "\",this)'>存档</button></li>")
+            if (neslist.length < 3) {
+                for (var i = neslist.length; i < 3; i++) {
+                    $("#savelist").append("<li><div class='avatar'></div> <span class='name'>瀛樻。[" + (i + 1) + "]</span> <span class='time'>鏈瓨妗�</span><button type='button' class='right btn btn-success' onclick='saveAndload(\"0\",\"" + id + "\",this)'>瀛樻。</button></li>")
+                }
             }
-        }
-        $("#saveContent").show()
-    })
+            $("#saveContent").show()
+        })
 }
 
 function deleteData() {
-    dbtool.deleteDataCall(10, 9, function () {
-    })
+    dbtool.deleteDataCall(10, 9,
+        function () {
+        })
 }
 
-function nesButtonDown(key, playnum) {
-    nes.buttonDown(playnum, key.keyCode)
+function syncbtndown(key) {
+    window.emulator.localController.btnKeyDown(key);
 }
 
-function nesButtonUp(key, playnum) {
-    nes.buttonUp(playnum, key.keyCode)
-}
-
-function nesButtonValue(key, playnum) {
-    nes.buttonValue(playnum, key.keyCode, key.keyValue)
+function syncbtnup(key) {
+    window.emulator.localController.btnKeyUp(key);
 }
 
 function pcAudioInit() {
@@ -812,20 +827,9 @@ function pcAudioInit() {
 
 function iosAudioInit() {
     if (!audiocall) {
-        window.AudioContext = window.webkitAudioContext || window.AudioContext;
-        audio_ctx = new window.AudioContext();
-        var script_processor = audio_ctx.createScriptProcessor(AUDIO_BUFFERING, 0, 2);
-        script_processor.onaudioprocess = audio_callback;
-        script_processor.connect(audio_ctx.destination)
+        speakers.start()
     }
 }
-
-document.addEventListener('keydown', (event) => {
-    keyboard(nes.buttonDown, event, 1)
-});
-document.addEventListener('keyup', (event) => {
-    keyboard(nes.buttonUp, event, 0)
-});
 
 function initSavelist(gid) {
     $("#closeModel").click(function () {
@@ -839,9 +843,15 @@ function initSavelist(gid) {
         "top": $(window).height() * 0.45 - $(window).width() * 0.4 + 20 + 'px',
         "left": -$(window).width() * 0.2 - 10 + 'px'
     });
-    $('.cheatlistcontain').css({'height': $(window).width() * 0.8 - 40 + 'px'});
-    $('.cheatswitch').css({'margin-left': $(window).height() * 0.9 - 140 + 'px'});
-    $('#closeModel,#closecheatsModel').css({"margin-left": $(window).height() * 0.8 + "px"});
+    $('.cheatlistcontain').css({
+        'height': $(window).width() * 0.8 - 40 + 'px'
+    });
+    $('.cheatswitch').css({
+        'margin-left': $(window).height() * 0.9 - 140 + 'px'
+    });
+    $('#closeModel,#closecheatsModel').css({
+        "margin-left": $(window).height() * 0.8 + "px"
+    });
     gameid = gid
 }
 
@@ -861,7 +871,9 @@ function initSavelistPC(gid) {
         "top": $(".tv-content").offset().top - 100 + 'px',
         "left": ($(window).width() / 3) + 'px'
     });
-    $('.opbtn').css({"left": ($('.tv-screen').offset().left + $('.tv-screen').width() + $('.tv-right').width()) + 'px'});
+    $('.opbtn').css({
+        "left": ($('.tv-screen').offset().left + $('.tv-screen').width() + $('.tv-right').width()) + 'px'
+    });
     $('#cheatscontent').css({
         "top": $(".tv-content").offset().top - 20 + 'px',
         "left": $('.tv-screen').offset().left - $('#cheatscontent').width() - 20 + 'px'
@@ -884,7 +896,7 @@ function initSavelistPC(gid) {
                 "left": "0px",
                 "top": "0px"
             });
-            $('#max_screen').text('放大屏幕')
+            $('#max_screen').text('鏀惧ぇ灞忓箷')
         } else {
             $('#max_screen').attr("screen", "1");
             $('#nes-canvas').css({
@@ -893,7 +905,7 @@ function initSavelistPC(gid) {
                 "left": -$(window).height() * 0.96 + $('.tv-hr').width() + 'px',
                 "top": -$('.tv-hr').offset().top + 20 + 'px'
             });
-            $('#max_screen').text('缩小屏幕')
+            $('#max_screen').text('缂╁皬灞忓箷')
         }
         $('#max_screen').blur()
     });
@@ -917,67 +929,12 @@ function getPLaynum(gamepadid) {
     if (!gameids[0]) {
         gameids[0] = gamepadid;
         return 1
-    } else if (gameids[0] == gamepadid) return 1; else if (!gameids[1]) {
+    } else if (gameids[0] == gamepadid) return 1;
+    else if (!gameids[1]) {
         gameids[1] == gamepadid;
         return 2
     } else if (gameids[1] == gamepadid) return 2;
     return 1
-}
-
-function gamepadloop() {
-    const gamepads = navigator.getGamepads ? navigator.getGamepads() : navigator.webkitGetGamepads();
-    for (let gamepadIndex = 0; gamepadIndex < gamepads.length; gamepadIndex++) {
-        const gamepad = gamepads[gamepadIndex];
-        const previousGamepad = gamepadState[gamepadIndex];
-        if (!gamepad) {
-            continue
-        }
-        if (!previousGamepad) {
-            initgamepadState(gamepadIndex, gamepad);
-            continue
-        }
-        const buttons = gamepad.buttons;
-        const previousButtons = previousGamepad.buttons;
-        var playnumer = getPLaynum(gamepad.id);
-        for (let code = 0; code < buttons.length; code++) {
-            const button = buttons[code];
-            const previousButton = previousButtons[code];
-            var neskey = controllers.get(code);
-            if (neskey == 0 || neskey) {
-                if (button.pressed && !previousButton.pressed) {
-                    nes.buttonValue(playnumer, neskey, 0x41)
-                } else if (!button.pressed && previousButton.pressed) {
-                    nes.buttonValue(playnumer, neskey, 0x40)
-                }
-            }
-        }
-        initgamepadState(gamepadIndex, gamepad)
-    }
-}
-
-let gamepadState = [];
-window.emulator.localController.btnKeyDown(key);
-function initgamepadState(gamepadIndex, gamepad) {
-    var statuss = [];
-    for (let i = 0; i < gamepad.buttons.length; i++) {
-        statuss[i] = {pressed: gamepad.buttons[i].pressed}
-    }
-    gamepadState[gamepadIndex] = {buttons: statuss}
-}
-
-let stopped = false;
-
-function loop() {
-    if (stopped) return;
-    gamepadloop();
-    requestAnimationFrame(loop)
-}
-
-function startPolling() {
-    if (!(navigator.getGamepads || navigator.webkitGetGamepads)) {
-        stopped = true
-    }
-    requestAnimationFrame(loop)
 }
 
 function getQueryString(key) {
@@ -993,89 +950,6 @@ function getQueryString(key) {
             return null
         }
     }
-}
-
-function startchat(roomid) {
-    var storage = window.localStorage;
-    var avatar = parseInt(Math.random() * 5, 10) + 1;
-    var nickname;
-    if (storage && storage.avatar) {
-        avatar = storage.avatar
-    } else if (storage) {
-        storage.avatar = avatar
-    }
-    if (storage && storage.nickname) {
-        nickname = storage.nickname
-    }
-    var roomid = 1;
-    var title = getQueryString("t");
-    console.log(title);
-    if (!roomid) roomid = 1;
-    socket = io.connect('https://yikm.net?roomid=' + roomid);
-    socket.on('connect', function () {
-        if (nickname) {
-            var realn = nickname + '-' + avatar;
-            socket.emit("join", realn.replace(/[\'\"\\\/\b\f\n\r\t\<\>]/g, ''), title)
-        }
-    });
-    socket.on('msg', function (userName, msg) {
-        var avatarnum = userName.substring(userName.lastIndexOf('-') + 1);
-        var realuserName = userName.substring(0, userName.lastIndexOf('-'));
-        var message = '<li class="message"><div class="avatar" style="background-image: url(https://yikm.net/avatar/' + avatarnum + '.png);"></div><div class="speaker">' + realuserName + '</div><div class="textContainer text-border text-border-left me"><div class="text">' + msg + '</div></div></li>';
-        $('.messages').append(message);
-        $('.messages').scrollTop($('.messages')[0].scrollHeight);
-        $('#closeChatModel').addClass('msg-coming');
-        setTimeout(function () {
-            $('#closeChatModel').removeClass('msg-coming')
-        }, 3000)
-    });
-    $('.chat-input').keydown(function (e) {
-        e.stopPropagation();
-        if (e.which === 13) {
-            if (!nickname) {
-                var proname = prompt("请输入昵称", "");
-                if (proname && proname.length > 0) {
-                    nickname = proname;
-                    storage.nickname = proname;
-                    socket.emit("join", proname + '-' + avatar, title)
-                }
-            }
-            var msg = $(this).val();
-            $(this).val('');
-            if (msg && msg.length > 0) socket.send(msg.replace(/[\'\"\\\/\b\f\n\r\t\<\>]/g, ''))
-        }
-    });
-    $('#mobile_send').click(function (e) {
-        if (!nickname) {
-            var proname = prompt("请输入昵称", "");
-            if (proname && proname.length > 0) {
-                nickname = proname;
-                storage.nickname = proname;
-                socket.emit("join", proname + '-' + avatar)
-            }
-        }
-        var msg = $('#word').val();
-        $('#word').val('');
-        if (msg && msg.length > 0) socket.send(msg.replace(/[\'\"\\\/\b\f\n\r\t\<\>]/g, ''))
-    });
-    $('.chat-input').keyup(function (e) {
-        e.stopPropagation()
-    });
-    socket.on('sys', function (sysMsg, type, title) {
-        var realuserName = sysMsg.substring(0, sysMsg.lastIndexOf('-'));
-        var sysType = '';
-        if (type == 1) sysType = '正在玩'; else if (type == 2) {
-        } else {
-            sysType = '离开了房间'
-        }
-        if (realuserName) {
-            var message = '<li class="message"><span class="subject">' + realuserName + '</span><span class="text">' + sysType + '</span><span class="subject">' + title.replace(/[\'\"\\\/\b\f\n\r\t\<\>]/g, '') + '</span></li>';
-            $('.messages').append(message)
-        }
-    });
-    socket.on('disconnect', function () {
-        console.log("与服务器断开连接!")
-    })
 }
 
 var cheatmap = new Map();
@@ -1105,7 +979,12 @@ function getCheatCode() {
             var address = parseInt(keys[0], 16);
             var value = parseInt(keys[1] + keys[2], 16);
             var desc = values[1];
-            gamecheatList[i] = {'address': address, 'values': value, 'desc': desc, 'status': false}
+            gamecheatList[i] = {
+                'address': address,
+                'values': value,
+                'desc': desc,
+                'status': false
+            }
         }
     }
 }
@@ -1156,10 +1035,10 @@ function initLocalkeys() {
     } else {
         localkeybords = {
             13: [9, 2, "ENTER"],
-            37: [3, 3, "←"],
-            38: [1, 3, "↑"],
-            39: [4, 3, "→"],
-            40: [2, 3, "↓"],
+            37: [3, 3, "鈫�"],
+            38: [1, 3, "鈫�"],
+            39: [4, 3, "鈫�"],
+            40: [2, 3, "鈫�"],
             46: [10, 3, "DELETE"],
             65: [3, 2, "A"],
             66: [10, 2, "B"],
@@ -1170,11 +1049,11 @@ function initLocalkeys() {
             83: [2, 2, "S"],
             85: [8, 2, "U"],
             87: [1, 2, "W"],
-            96: [9, 3, "数字键盘0"],
-            97: [6, 3, "数字键盘1"],
-            98: [5, 3, "数字键盘2"],
-            100: [8, 3, "数字键盘4"],
-            101: [7, 3, "数字键盘5"]
+            96: [9, 3, "鏁板瓧閿洏0"],
+            97: [6, 3, "鏁板瓧閿洏1"],
+            98: [5, 3, "鏁板瓧閿洏2"],
+            100: [8, 3, "鏁板瓧閿洏4"],
+            101: [7, 3, "鏁板瓧閿洏5"]
         };
         lstorage.keys = JSON.stringify(localkeybords)
     }
@@ -1186,19 +1065,92 @@ function initTableKey() {
     }
 }
 
-function send_m_key(key_code ,type) {
-    var para = {
-        key_code: key_code,
-        room_id: room_id,
-        userid: userid,
-        username: username,
-        event: 'message',
-        type: type,
-    };
-    var data = {
-        0: 'message',
-        1: para,
-    };
-    var data_str = JSON.stringify(data);
-    ws.send(data_str);
+function RingBuffer(capacity, evictedCb) {
+    this._elements = new Array(capacity || 50);
+    this._first = 0;
+    this._last = 0;
+    this._size = 0;
+    this._evictedCb = evictedCb
+}
+
+RingBuffer.prototype.capacity = function () {
+    return this._elements.length
+};
+RingBuffer.prototype.isEmpty = function () {
+    return this.size() === 0
+};
+RingBuffer.prototype.isFull = function () {
+    return this.size() === this.capacity()
+};
+RingBuffer.prototype.peek = function () {
+    if (this.isEmpty()) throw new Error('RingBuffer is empty');
+    return this._elements[this._first]
+};
+RingBuffer.prototype.peekN = function (count) {
+    if (count > this._size) throw new Error('Not enough elements in RingBuffer');
+    var end = Math.min(this._first + count, this.capacity());
+    var firstHalf = this._elements.slice(this._first, end);
+    if (end < this.capacity()) {
+        return firstHalf
+    }
+    var secondHalf = this._elements.slice(0, count - firstHalf.length);
+    return firstHalf.concat(secondHalf)
+};
+RingBuffer.prototype.deq = function () {
+    var element = this.peek();
+    this._size--;
+    this._first = (this._first + 1) % this.capacity();
+    return element
+};
+RingBuffer.prototype.deqN = function (count) {
+    var elements = this.peekN(count);
+    this._size -= count;
+    this._first = (this._first + count) % this.capacity();
+    return elements
+};
+RingBuffer.prototype.enq = function (element) {
+    this._end = (this._first + this.size()) % this.capacity();
+    var full = this.isFull();
+    if (full && this._evictedCb) {
+        this._evictedCb(this._elements[this._end])
+    }
+    this._elements[this._end] = element;
+    if (full) {
+        this._first = (this._first + 1) % this.capacity()
+    } else {
+        this._size++
+    }
+    return this.size()
+};
+RingBuffer.prototype.size = function () {
+    return this._size
+};
+
+function savehistory() {
+    var canvas = document.getElementById("nes-canvas");
+    var nesInfo = new Object();
+    nesInfo.name = getQueryString("t");
+    nesInfo.id = getQueryString("id");
+    nesInfo.pic = canvas.toDataURL("image/jpeg", 0.3);
+    nesInfo.url = window.location.href;
+    var gameHistory = lstorage.gameHistory;
+    if (gameHistory) {
+        gameHistory = JSON.parse(gameHistory);
+        for (var i = 0; i < gameHistory.length; i++) {
+            if (gameHistory[i].id == nesInfo.id) {
+                gameHistory.splice(i, 1);
+                break
+            }
+        }
+        if (gameHistory.length >= 8) {
+            gameHistory.unshift(nesInfo);
+            gameHistory.pop()
+        } else {
+            gameHistory.unshift(nesInfo)
+        }
+    } else {
+        gameHistory = [];
+        gameHistory.push(nesInfo)
+    }
+    lstorage.gameHistory = JSON.stringify(gameHistory)
 }

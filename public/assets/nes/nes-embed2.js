@@ -11,7 +11,7 @@ var SAMPLE_MASK = SAMPLE_COUNT - 1;
 var audio_samples_L = new Float32Array(SAMPLE_COUNT);
 var audio_samples_R = new Float32Array(SAMPLE_COUNT);
 var audio_write_cursor = 0, audio_read_cursor = 0;
-
+var canvas;
 var nes = new jsnes.NES({
     onFrame: function (framebuffer_24) {
         for (var i = 0; i < FRAMEBUFFER_SIZE; i++) framebuffer_u32[i] = 0xFF000000 | framebuffer_24[i];
@@ -28,6 +28,8 @@ function onAnimationFrame() {
 
     image.data.set(framebuffer_u8);
     canvas_ctx.putImageData(image, 0, 0);
+
+    sendImg(canvas.toDataURL("image/jpeg", 0.7));
     nes.frame();
 }
 
@@ -156,7 +158,7 @@ function keyboard2(callback, event) {
 }
 
 function nes_init(canvas_id) {
-    var canvas = document.getElementById(canvas_id);
+    canvas = document.getElementById(canvas_id);
     canvas_ctx = canvas.getContext("2d");
     image = canvas_ctx.getImageData(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 

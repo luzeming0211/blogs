@@ -20,7 +20,7 @@
 
     ws.onopen = function () {
         send_join();
-        get_img();
+        // get_img();
     };
 
     ws.onmessage = function (evt) {
@@ -31,6 +31,7 @@
             type = info.type;
             if (type == 'img') {
                 img_data = info.img;
+                $("#game_img").attr('src',img_data)
             }
             if (type == 'message') {
                 $('#message').html(info.content);
@@ -41,7 +42,7 @@
     };
 
     function get_img(canvas) {
-        setInterval(setImg, 150);
+        setInterval(setImg, 80);
     }
     function setImg(){
         $("#game_img").attr('src',img_data);

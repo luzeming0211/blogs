@@ -35,7 +35,12 @@ class NesController extends Controller
         $url = env('APP_URL') . '/nes/' . $room_id . '/' . $id;
         ld($url);
         $ws_host = getWxDomain();
-        $show_page = 'room.m.p1';
+
+        $show_page = 'room.p1';
+        if (isMobile()){
+            $show_page = 'room.m.p1';
+        }
+
         return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host', 'url'));
     }
 
@@ -63,8 +68,11 @@ class NesController extends Controller
         }
 
         $ws_host = getWxDomain();
-        $show_page = 'room.m.p2';
         $url = '';
+        $show_page = 'room.p2';
+        if (isMobile()){
+            $show_page = 'room.m.p2';
+        }
         return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host','url'));
     }
 
