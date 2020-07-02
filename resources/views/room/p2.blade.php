@@ -30,8 +30,7 @@
             info = obj[1];
             type = info.type;
             if (type == 'img') {
-                img_data = info.img;
-                $("#game_img").attr('src',img_data)
+                $("#game_img").attr('src',info.img)
             }
             if (type == 'message') {
                 $('#message').html(info.content);
