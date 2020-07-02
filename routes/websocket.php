@@ -20,8 +20,9 @@ Websocket::on('message', function ($websocket, $data) use ($redis) {
 //                dump(time());
 //            }
 //            $redis::set($key_client, $room_id);
-            Room::add(Websocket::getSender(), $room_id);
-            Websocket::broadcast()->to([$room_id])->emit('message', $data);
+//            Room::add(Websocket::getSender(), $room_id);
+//            Websocket::broadcast()->to([$room_id])->emit('message', $data);
+            Websocket::broadcast()->emit('message', $data);
         }
     }
 
