@@ -3,6 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{ $nes->name }}</title>
+    <script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="{{asset('assets/nes')}}/jsnes.min.js"></script>
+    <script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
 </head>
 <body>
 <div id="message">等待p2加入</div>
@@ -18,9 +21,7 @@
 </div>
 <img src="" alt="" id="game_img">
 <input type="text" value="{{ $url }}">
-<script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
-<script type="text/javascript" src="{{asset('assets/nes')}}/jsnes.min.js"></script>
-<script type="text/javascript" src="{{asset('assets/nes')}}/nes-embed2.js"></script>
+
 <script>
     var userid = '{{ $userid }}';
     var username = '{{ $username }}';
