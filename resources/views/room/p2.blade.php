@@ -30,6 +30,7 @@
             info = obj[1];
             type = info.type;
             if (type == 'img') {
+                console.log(info.img);
                 $("#game_img").attr('src',info.img)
             }
             if (type == 'message') {
