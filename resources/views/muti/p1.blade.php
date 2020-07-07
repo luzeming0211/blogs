@@ -72,7 +72,7 @@
         document.getElementById('conn_other').addEventListener('click', conn_other);
 
         initialize();
-        nes_load_url("nes-canvas", "http://laravel.test/upload/files/snow.nes");
+        nes_load_url("nes-canvas", nes_url);
 
 
         var userid = '1';
