@@ -12,12 +12,12 @@ Websocket::on('message', function ($websocket, $data) use ($redis) {
             $key_client = 'client:' . Websocket::getSender();
             $room_id = isset($data['room_id']) ? $data['room_id'] : '';
             if (!empty($room_id)) {
-                $flag = $redis::exists($key_client);
-                if (!$flag) {
-                    $redis::set($key_client, $room_id);
-                }
-                $redis::set($key_client, $room_id);
-                Room::add(Websocket::getSender(), $room_id);
+//                $flag = $redis::exists($key_client);
+//                if (!$flag) {
+//                    $redis::set($key_client, $room_id);
+//                }
+//                $redis::set($key_client, $room_id);
+//                Room::add(Websocket::getSender(), $room_id);
                 Websocket::broadcast()->emit('message', $data);
             }
         }
@@ -33,12 +33,12 @@ Websocket::on('connect', function ($websocket, Request $request) {
 });
 
 Websocket::on('disconnect', function ($websocket) use ($redis) {
-    $key_client = 'client:' . Websocket::getSender();
-    $room_id = $redis::get($key_client);
-    $room_str = 'game:room_' . $room_id;
-    $redis::del($room_str);
-    $redis::del($key_client);
-    Room::delete(Websocket::getSender(), [$room_id]);
+//    $key_client = 'client:' . Websocket::getSender();
+//    $room_id = $redis::get($key_client);
+//    $room_str = 'game:room_' . $room_id;
+//    $redis::del($room_str);
+//    $redis::del($key_client);
+//    Room::delete(Websocket::getSender(), [$room_id]);
 });
 
 
