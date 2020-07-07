@@ -1,6 +1,6 @@
-var gameid = 4511, gameurl = "/fcrom/xyx/Snow Bros. (J).nes", gamename = "雪人兄弟(日版)", gamepic = "/fcpic/xyx/2023a.png",
-    roomid = "c7feb174a863470bb4612fe60ff22af1", title = "一起玩个痛快", roompassword = "", avatar = "/f.png",
-    nickname = "手机玩家";
+var gameid = 3882, gameurl = "/fcrom/gd/Teenage Mutant Hero Turtles - Tournament Fighters (E) [!].nes",
+    gamename = "激龟快打(忍者神龟格斗)欧版", gamepic = "/fcpic/gd/2254a.png", roomid = "a61def9768da45bfb724009ce9113918",
+    title = "一起玩个痛快", roompassword = "", avatar = "/f.png", nickname = "手机玩家";
 
 function showplayer(n, e, t) {
     1 == e ? $("#player" + n).addClass("show-players") : $("#player" + n).removeClass("show-players")

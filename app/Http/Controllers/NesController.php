@@ -77,9 +77,16 @@ class NesController extends Controller
     }
 
 
-    public function test2()
+    public function p1()
     {
-        return view('room.m.test');
+        $ws_host = getWxDomain();
+        return view('muti.p1',compact('ws_host'));
+    }
+
+    public function p2()
+    {
+        $ws_host = getWxDomain();
+        return view('muti.p2',compact('ws_host'));
     }
 
 
