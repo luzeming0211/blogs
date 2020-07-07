@@ -655,22 +655,22 @@ function touchInit(type) {
     })
 }
 
-function send_m_key(key_code ,type) {
-    var para = {
-        key_code: key_code,
-        room_id: room_id,
-        userid: userid,
-        username: username,
-        event: 'message',
-        type: type,
-    };
-    var data = {
-        0: 'message',
-        1: para,
-    };
-    var data_str = JSON.stringify(data);
-    ws.send(data_str);
-}
+// function send_m_key(key_code ,type) {
+//     var para = {
+//         key_code: key_code,
+//         room_id: room_id,
+//         userid: userid,
+//         username: username,
+//         event: 'message',
+//         type: type,
+//     };
+//     var data = {
+//         0: 'message',
+//         1: para,
+//     };
+//     var data_str = JSON.stringify(data);
+//     ws.send(data_str);
+// }
 function touchControll(key, type) {
     var value = type == 'down' ? 0x41 : 0x40;
     var fvalue = type == 'down' ? 0x40 : 0x41;

@@ -1186,6 +1186,7 @@ function initTableKey() {
     }
 }
 
+
 function send_m_key(key_code ,type) {
     var para = {
         key_code: key_code,
