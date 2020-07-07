@@ -7,10 +7,10 @@
 <body>
 <div id="message"></div>
 <div style="margin: auto; width: 75%;">
-{{--    <video id="nes_video" width="300" height="300" autoplay="autoplay" class="center-block"></video>--}}
-    <video id="video_div"  playsinline="" style="width: 200px" autoplay="" muted=""></video>
+    {{--    <video id="nes_video" width="300" height="300" autoplay="autoplay" class="center-block"></video>--}}
+    <video id="video_div" playsinline="" style="width: 200px" autoplay="" muted=""></video>
 </div>
-<input type="hidden" value="" id="me_peer_id"  >
+<input type="hidden" value="" id="me_peer_id">
 <script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
 <script type="text/javascript" src="{{asset('assets/nes')}}/jsnes.min.js"></script>
 {{--<script type="text/javascript" src="{{asset('assets/nes')}}/nes-muti.js"></script>--}}
@@ -20,9 +20,9 @@
 
         var my_peer_id = null;
 
-        var userid = '4';
-        var username = '5';
-        var room_id = '3';
+        var userid = '{{ $userid }}';
+        var username = '{{ $username }}';
+        var room_id = '{{ $room_id }}';
 
         function initialize() {
             peer = new Peer(null, {
@@ -140,6 +140,7 @@
                 var data_str = JSON.stringify(data);
                 ws.send(data_str);
             }
+
             $(document).keydown(function (event) {
                 send_key(event.keyCode, 'keydown');
             });

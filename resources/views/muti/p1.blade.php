@@ -24,12 +24,14 @@
 {{--我的id--}}
 <input type="hidden" value="" id="me_peer_id">
 <input type="hidden" value="" id="other_peer_id">
+<input type="text" value="{{ $url }}" id=""  >
 {{--<button id="conn_other">点我连接</button>--}}
 <script type="text/javascript">
     (function () {
 
         var other_peer_id = null;
-        var nes_url = '{{ env('APP_URL').'/upload/files/snow.nes' }}'
+{{--        var nes_url = '{{ env('APP_URL').'/upload/files/snow.nes' }}'--}}
+        var nes_url = '{{ $nes->game }}'
 
         function initialize() {
             peer = new Peer(null, {
@@ -56,28 +58,26 @@
                 console.log(err);
             });
         };
-
         function conn_other(other_peer_id) {
-            // other_peer_id = $("#other_peer_id").val();
+            console.log('链接' + other_peer_id);
             let nes_canvas = document.getElementById('nes-canvas');
             let stream = nes_canvas.captureStream();
-            // console.log('callllllllllllllll');
             const call = peer.call(other_peer_id, stream);
+
             call.on('stream', (remoteStream) => {
-                // var video_div = document.getElementById('video_div');
-                // video_div.srcObject = remoteStream;
+
             });
         }
 
-        document.getElementById('conn_other').addEventListener('click', conn_other);
+        // document.getElementById('conn_other').addEventListener('click', conn_other);
 
         initialize();
         nes_load_url("nes-canvas", nes_url);
 
 
-        var userid = '1';
-        var username = '2';
-        var room_id = '3';
+        var userid = '{{ $userid }}';
+        var username = '{{ $username }}';
+        var room_id = '{{ $room_id }}';
 
         var ws = new WebSocket("ws://{{ $ws_host }}");
 
@@ -103,9 +103,6 @@
                     $('#message').html(info.content);
                 }
                 if (type == 'join') {
-                    console.log('other_peer_id');
-                    console.log(other_peer_id);
-                    console.log('other_peer_id');
                     conn_other(other_peer_id);
                 }
 
