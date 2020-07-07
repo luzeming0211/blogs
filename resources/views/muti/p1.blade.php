@@ -21,10 +21,10 @@
     开始 ：回车
     选择：B
 </div>
-我的id
-<input type="text" value="" id="me_peer_id">
-<input type="text" value="" id="other_peer_id">
-<button id="conn_other">点我连接</button>
+{{--我的id--}}
+<input type="hidden" value="" id="me_peer_id">
+<input type="hidden" value="" id="other_peer_id">
+{{--<button id="conn_other">点我连接</button>--}}
 <script type="text/javascript">
     (function () {
 

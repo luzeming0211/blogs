@@ -8,9 +8,9 @@
 <div id="message"></div>
 <div style="margin: auto; width: 75%;">
 {{--    <video id="nes_video" width="300" height="300" autoplay="autoplay" class="center-block"></video>--}}
-    <video id="video_div" controls="controls" src="" style="width: 200px" autoplay></video>
+    <video id="video_div"  playsinline="" style="width: 200px" autoplay="" muted=""></video>
 </div>
-<input type="text" value="" id="me_peer_id">
+<input type="hidden" value="" id="me_peer_id"  >
 <script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
 <script type="text/javascript" src="{{asset('assets/nes')}}/jsnes.min.js"></script>
 {{--<script type="text/javascript" src="{{asset('assets/nes')}}/nes-muti.js"></script>--}}
