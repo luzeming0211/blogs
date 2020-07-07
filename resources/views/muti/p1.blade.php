@@ -33,7 +33,7 @@
 
         function initialize() {
             peer = new Peer(null, {
-                host: 'laravel.test',
+                host: '{{  env('APP_DOMAIN') }}',
                 port: 9000,
                 debug: 3,
                 path: '/myapp'
