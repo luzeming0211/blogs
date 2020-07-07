@@ -79,7 +79,7 @@
         var username = '2';
         var room_id = '3';
 
-        var ws = new WebSocket("ws://{{ $ws_host }}");
+        var ws = new WebSocket("wss://{{ $ws_host }}");
 
         ws.onopen = function () {
             send_conn();
