@@ -8,16 +8,18 @@ use SwooleTW\Http\Websocket\Facades\Websocket;
 $redis = '\Illuminate\Support\Facades\Redis';
 Websocket::on('message', function ($websocket, $data) use ($redis) {
     if (is_array($data)) {
-        $key_client = 'client:' . Websocket::getSender();
-        $room_id = isset($data['room_id']) ? $data['room_id'] : '';
-        if (!empty($room_id)) {
-            $flag = $redis::exists($key_client);
-            if (!$flag) {
+        if (Websocket::getSender()){
+            $key_client = 'client:' . Websocket::getSender();
+            $room_id = isset($data['room_id']) ? $data['room_id'] : '';
+            if (!empty($room_id)) {
+                $flag = $redis::exists($key_client);
+                if (!$flag) {
+                    $redis::set($key_client, $room_id);
+                }
                 $redis::set($key_client, $room_id);
+                Room::add(Websocket::getSender(), $room_id);
+                Websocket::broadcast()->emit('message', $data);
             }
-            $redis::set($key_client, $room_id);
-            Room::add(Websocket::getSender(), $room_id);
-            Websocket::broadcast()->emit('message', $data);
         }
     }
 
