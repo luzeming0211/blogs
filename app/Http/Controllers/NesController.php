@@ -30,8 +30,8 @@ class NesController extends Controller
         $room_id = uniqid();
         $userid = uniqid();
         $username = uniqid();
-        $room_str = 'game:room_' . $room_id;
-        Redis::set($room_str, $userid);
+//        $room_str = 'game:room_' . $room_id;
+//        Redis::set($room_str, $userid);
         $url = env('APP_URL') . '/nes/' . $room_id . '/' . $id;
         ld($url);
         $ws_host = getWxDomain();

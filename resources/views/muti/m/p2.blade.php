@@ -91,7 +91,13 @@
 
             call.on('stream', function (stream) {
                 let video_div = document.getElementById('video_div');
-                video_div.srcObject = stream;
+                // video_div.srcObject = stream;
+                // video_div.play();
+                try {
+                    video_div.srcObject = stream;
+                } catch (error) {
+                    video_div.src = URL.createObjectURL(stream);
+                }
                 video_div.play();
             });
             call.on('close', function () {
