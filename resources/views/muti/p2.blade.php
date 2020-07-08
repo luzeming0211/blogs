@@ -6,10 +6,13 @@
 </head>
 <body>
 <div id="message"></div>
-<div style="margin: auto; width: 75%;">
-    {{--    <video id="nes_video" width="300" height="300" autoplay="autoplay" class="center-block"></video>--}}
-    <video id="video_div" playsinline="" style="width: 200px" autoplay="" muted=""></video>
-</div>
+{{--<div style="margin: auto; width: 75%;">--}}
+    <video id="video_div" playsinline="" style="width: 200px;" autoplay muted ></video>
+{{--<img src="" alt="" id="nes_img">--}}
+{{--</div>--}}
+{{--<div style="margin: auto; width: 75%;">--}}
+{{--    <canvas id="nes-canvas" width="256" height="240" style="width: 75%"/>--}}
+{{--</div>--}}
 <input type="hidden" value="" id="me_peer_id">
 <script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
 <script type="text/javascript" src="{{asset('assets/nes')}}/jsnes.min.js"></script>
@@ -23,6 +26,10 @@
         var userid = '{{ $userid }}';
         var username = '{{ $username }}';
         var room_id = '{{ $room_id }}';
+
+        var  video_div = document.getElementById('video_div');
+        var  nes_canvas = document.getElementById('nes-canvas');
+        var  nes_img = document.getElementById('nes_img');
 
         function initialize() {
             peer = new Peer(null, {
@@ -58,11 +65,7 @@
                 // console.log(call);
                 // console.log(222);
                 call.on('stream', function (stream) {
-                    // console.log(111);
-                    let video_div = document.getElementById('video_div');
-                    // console.log('nes_video');
-                    // console.log(video_div);
-                    // console.log('nes_video');
+                    console.log(111);
                     video_div.srcObject = stream;
                 });
                 call.on('close', function () {

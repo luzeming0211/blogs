@@ -109,6 +109,7 @@
                         video.srcObject = mediaSource;
                     } catch (err) {
                         if (err.name != "TypeError") {
+                            alert(err);
                             throw err;
                         }
                         // Even if they do, they may only support MediaStream
