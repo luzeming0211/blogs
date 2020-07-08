@@ -65,7 +65,7 @@
     var other_peer_id = null;
 
 
-    $('#qrcode').qrcode(join_url);
+
 
     function initialize() {
         peer = new Peer(null, {
@@ -108,6 +108,7 @@
     initmenu();
     mobile_init();
     nes_load_url("nes-canvas", nes_url);
+    $('#qrcode').qrcode(join_url);
 
     var ws = new WebSocket("ws://{{ $ws_host }}");
 
