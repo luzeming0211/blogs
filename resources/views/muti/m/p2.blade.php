@@ -58,6 +58,7 @@
     var send_player = 1;
     var my_peer_id = null;
     var interval_send_join;
+    var video = document.getElementById('video_div');
 
     function initialize() {
         peer = new Peer(null, {
@@ -90,7 +91,6 @@
             call.answer();
 
             call.on('stream', function (mediaSource) {
-                let video = document.getElementById('video_div');
                 // video_div.srcObject = stream;
                 // video_div.play();
                 // var URL = window.URL || window.webkitURL;
@@ -413,6 +413,9 @@
         var data_str = JSON.stringify(data);
         ws.send(data_str);
     }
+    document.getElementById("video_div").addEventListener("click", function(){
+        video.play();
+    });
 </script>
 </body>
 </html>
