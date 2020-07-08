@@ -89,20 +89,35 @@
 
             call.answer();
 
-            call.on('stream', function (stream) {
-                let video_div = document.getElementById('video_div');
+            call.on('stream', function (mediaSource) {
+                let video = document.getElementById('video_div');
                 // video_div.srcObject = stream;
                 // video_div.play();
-
-                var URL = window.URL || window.webkitURL;
-                var createObjectURL = URL.createObjectURL || webkitURL.createObjectURL;
+                // var URL = window.URL || window.webkitURL;
+                // var createObjectURL = URL.createObjectURL || webkitURL.createObjectURL;
                 // try {
                 //     video_div.srcObject = stream;
                 // } catch (error) {
                 //     video_div.src = URL.createObjectURL(stream);
                 // }
-                video_div.src = createObjectURL(stream);
-                video_div.play();
+                // video_div.src = createObjectURL(stream);
+                // video_div.play();
+
+
+                if ('srcObject' in video) {
+                    try {
+                        video.srcObject = mediaSource;
+                    } catch (err) {
+                        if (err.name != "TypeError") {
+                            throw err;
+                        }
+                        // Even if they do, they may only support MediaStream
+                        video.src = URL.createObjectURL(mediaSource);
+                    }
+                } else {
+                    video.src = URL.createObjectURL(mediaSource);
+                }
+
             });
             call.on('close', function () {
                 console.log('close');
