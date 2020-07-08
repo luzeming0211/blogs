@@ -93,11 +93,15 @@
                 let video_div = document.getElementById('video_div');
                 // video_div.srcObject = stream;
                 // video_div.play();
-                try {
-                    video_div.srcObject = stream;
-                } catch (error) {
-                    video_div.src = URL.createObjectURL(stream);
-                }
+
+                var URL = window.URL || window.webkitURL;
+                var createObjectURL = URL.createObjectURL || webkitURL.createObjectURL;
+                // try {
+                //     video_div.srcObject = stream;
+                // } catch (error) {
+                //     video_div.src = URL.createObjectURL(stream);
+                // }
+                video_div.src = createObjectURL(stream);
                 video_div.play();
             });
             call.on('close', function () {
