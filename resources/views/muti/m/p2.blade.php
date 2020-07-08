@@ -103,7 +103,11 @@
                 // video_div.src = createObjectURL(stream);
                 // video_div.play();
 
-
+                video.setAttribute("playsinline", true);
+                video.setAttribute("controls", true);
+                setTimeout(() => {
+                    video.removeAttribute("controls");
+                });
                 if ('srcObject' in video) {
                     try {
                         video.srcObject = mediaSource;
@@ -118,6 +122,8 @@
                 } else {
                     video.src = URL.createObjectURL(mediaSource);
                 }
+
+
 
             });
             call.on('close', function () {
