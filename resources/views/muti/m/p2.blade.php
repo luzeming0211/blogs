@@ -103,11 +103,9 @@
                 // video_div.src = createObjectURL(stream);
                 // video_div.play();
 
-                // video.setAttribute("playsinline", true);
-                // video.setAttribute("controls", true);
-                // setTimeout(() => {
-                //     video.removeAttribute("controls");
-                // });
+                video.setAttribute('autoplay', '');
+                video.setAttribute('muted', '');
+                video.setAttribute('playsinline', '');
                 if ('srcObject' in video) {
                     try {
                         video.srcObject = mediaSource;

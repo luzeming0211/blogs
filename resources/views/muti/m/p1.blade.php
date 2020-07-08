@@ -15,10 +15,11 @@
 </head>
 
 <body>
-<div id="qrcode"></div>
+
 <div id="emulator">
     <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
             style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></canvas>
+    <div id="qrcode" class="nes-screen" style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></div>
 </div>
 <div class="bg-model"
      style="position: absolute; top: 0%; left: 0%; display: none; background: rgba(0, 0, 0, 0.3); width: 100%; height: 100%; position: fixed; z-index: 9999">
@@ -26,6 +27,7 @@
          style="position: absolute; left: 35%; top: 25%; border-radius: 8px; width: 30%; height: 40%; background-color: #fff;">
     </div>
 </div>
+
 <div id="psp">
     <div class="interaction-area">
         <button id="joystick_left" class="arrow">▵</button>
