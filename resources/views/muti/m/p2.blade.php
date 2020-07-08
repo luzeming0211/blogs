@@ -92,6 +92,7 @@
             call.on('stream', function (stream) {
                 let video_div = document.getElementById('video_div');
                 video_div.srcObject = stream;
+                video_div.play();
             });
             call.on('close', function () {
                 console.log('close');
