@@ -9,7 +9,7 @@ $redis = '\Illuminate\Support\Facades\Redis';
 Websocket::on('message', function ($websocket, $data) use ($redis) {
     if (is_array($data)) {
         if (Websocket::getSender()){
-            $key_client = 'client:' . Websocket::getSender();
+//            $key_client = 'client:' . Websocket::getSender();
             $room_id = isset($data['room_id']) ? $data['room_id'] : '';
             if (!empty($room_id)) {
 //                $flag = $redis::exists($key_client);

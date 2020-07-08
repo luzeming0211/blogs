@@ -495,169 +495,169 @@ function joystickInit(realWidth, nesWidth, realHight, type) {
     var leftpx = joystickSize * (2 / 3)
 }
 
-function touchInit(type) {
-    $('.interaction-area').bind('touchstart gesturestart', function (e) {
-        handleDir(e, type);
-        e.preventDefault()
-    });
-    $('.interaction-area').bind('touchmove', function (e) {
-        handleDir(e, type)
-    });
-    $('#joystick_btn_menu').bind('touchstart gesturestart touchmove', function (e) {
-        $('#joystick_btn_menu').addClass('active');
-        e.preventDefault()
-    });
-    $('#joystick_btn_menu').bind('touchend', function (e) {
-        $('#joystick_btn_menu').removeClass('active');
-        $(".menu").show();
-        e.preventDefault()
-    });
-    $('#menu_btn_saverom').bind('touchend', function (e) {
-        closemenu();
-        getNesList(gameid);
-        e.preventDefault()
-    });
-    $('.interaction-area').bind('touchend', function (e) {
-        $('#joystick_down').removeClass('active');
-        $('#joystick_left').removeClass('active');
-        $('#joystick_up').removeClass('active');
-        $('#joystick_right').removeClass('active');
-        send_m_key('left','keyup');
-        send_m_key('up','keyup');
-        send_m_key('right','keyup');
-        send_m_key('down','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_LEFT}, player);
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_UP}, player);
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_RIGHT}, player);
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_DOWN}, player)
-    });
-    $('#joystick_btn_start').bind('touchstart gesturestart touchmove', function (e) {
-        $('#joystick_btn_start').addClass('active');
-        send_m_key('start','keydown');
-        nesButtonDown({keyCode: jsnes.Controller.BUTTON_START}, player);
-        e.preventDefault()
-    });
-    $('#joystick_btn_start').bind('touchend', function (e) {
-        $('#joystick_btn_start').removeClass('active');
-        deleteData();
-        send_m_key('start','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_START}, player);
-        e.preventDefault();
-        iosAudioInit()
-    });
-    $('#joystick_btn_choice').bind('touchstart gesturestart touchmove', function (e) {
-        $('#joystick_btn_choice').addClass('active');
-        send_m_key('choice','keydown');
-        nesButtonDown({keyCode: jsnes.Controller.BUTTON_SELECT}, player);
-        e.preventDefault()
-    });
-    $('#joystick_btn_choice').bind('touchend', function (e) {
-        $('#joystick_btn_choice').removeClass('active');
-        send_m_key('choice','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_SELECT}, player);
-        e.preventDefault()
-    });
-    // luzeming
-    $('#joystick_btn_A').bind('touchstart gesturestart touchmove', function (e) {
-        send_m_key('A','keydown');
-        touchAB(e, false, 'A');
-        e.preventDefault()
-    });
-    $('#joystick_btn_A').bind('touchend', function (e) {
-        $('#joystick_btn_A').removeClass('active');
-        send_m_key('A','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-        e.preventDefault()
-    });
-    $('#joystick_btn_B').bind('touchstart gesturestart touchmove', function (e) {
-        send_m_key('B','keydown');
-        touchAB(e, false, 'B');
-        e.preventDefault()
-    });
-    $('#joystick_btn_B').bind('touchend', function (e) {
-        $('#joystick_btn_B').removeClass('active');
-        send_m_key('B','keyup');
-        nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-        e.preventDefault()
-    });
-    // $('#joystick_btn_AB').bind('touchstart gesturestart touchmove', function (e) {
-    //     touchAB(e, false, 'AB');
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_AB').bind('touchend', function (e) {
-    //     $('#joystick_btn_AB').removeClass('active');
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_X').bind('touchstart gesturestart touchmove', function (e) {
-    //     touchAB(e, true, 'A');
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_X').bind('touchend', function (e) {
-    //     $('#joystick_btn_X').removeClass('active');
-    //     clearInterval(interval);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_Y').bind('touchstart gesturestart touchmove', function (e) {
-    //     touchAB(e, true, 'B');
-    //     e.preventDefault()
-    // });
-    // $('#joystick_btn_Y').bind('touchend', function (e) {
-    //     $('#joystick_btn_Y').removeClass('active');
-    //     clearInterval(interval);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
-    //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
-    //     e.preventDefault()
-    // })
-}
-
-function touchControll(key, type) {
-    var value = type == 'down' ? 0x41 : 0x40;
-    var fvalue = type == 'down' ? 0x40 : 0x41;
-    var key_type = type == 'down' ? 'keydown': 'keyup';
-    send_m_key(key,key_type);
-    switch (key) {
-        case'left':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
-            break;
-        case'right':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
-            break;
-        case'up':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
-            break;
-        case'down':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
-            break;
-        case'leftup':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, fvalue);
-            break;
-        case'rightup':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, fvalue);
-            break;
-        case'leftdown':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, fvalue);
-            break;
-        case'rightdown':
-            nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_UP, fvalue);
-            nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, fvalue);
-            break
-    }
-}
+// function touchInit(type) {
+//     $('.interaction-area').bind('touchstart gesturestart', function (e) {
+//         handleDir(e, type);
+//         e.preventDefault()
+//     });
+//     $('.interaction-area').bind('touchmove', function (e) {
+//         handleDir(e, type)
+//     });
+//     $('#joystick_btn_menu').bind('touchstart gesturestart touchmove', function (e) {
+//         $('#joystick_btn_menu').addClass('active');
+//         e.preventDefault()
+//     });
+//     $('#joystick_btn_menu').bind('touchend', function (e) {
+//         $('#joystick_btn_menu').removeClass('active');
+//         $(".menu").show();
+//         e.preventDefault()
+//     });
+//     $('#menu_btn_saverom').bind('touchend', function (e) {
+//         closemenu();
+//         getNesList(gameid);
+//         e.preventDefault()
+//     });
+//     $('.interaction-area').bind('touchend', function (e) {
+//         $('#joystick_down').removeClass('active');
+//         $('#joystick_left').removeClass('active');
+//         $('#joystick_up').removeClass('active');
+//         $('#joystick_right').removeClass('active');
+//         send_m_key('left','keyup');
+//         send_m_key('up','keyup');
+//         send_m_key('right','keyup');
+//         send_m_key('down','keyup');
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_LEFT}, player);
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_UP}, player);
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_RIGHT}, player);
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_DOWN}, player)
+//     });
+//     $('#joystick_btn_start').bind('touchstart gesturestart touchmove', function (e) {
+//         $('#joystick_btn_start').addClass('active');
+//         send_m_key('start','keydown');
+//         nesButtonDown({keyCode: jsnes.Controller.BUTTON_START}, player);
+//         e.preventDefault()
+//     });
+//     $('#joystick_btn_start').bind('touchend', function (e) {
+//         $('#joystick_btn_start').removeClass('active');
+//         deleteData();
+//         send_m_key('start','keyup');
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_START}, player);
+//         e.preventDefault();
+//         iosAudioInit()
+//     });
+//     $('#joystick_btn_choice').bind('touchstart gesturestart touchmove', function (e) {
+//         $('#joystick_btn_choice').addClass('active');
+//         send_m_key('choice','keydown');
+//         nesButtonDown({keyCode: jsnes.Controller.BUTTON_SELECT}, player);
+//         e.preventDefault()
+//     });
+//     $('#joystick_btn_choice').bind('touchend', function (e) {
+//         $('#joystick_btn_choice').removeClass('active');
+//         send_m_key('choice','keyup');
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_SELECT}, player);
+//         e.preventDefault()
+//     });
+//     // luzeming
+//     $('#joystick_btn_A').bind('touchstart gesturestart touchmove', function (e) {
+//         send_m_key('A','keydown');
+//         touchAB(e, false, 'A');
+//         e.preventDefault()
+//     });
+//     $('#joystick_btn_A').bind('touchend', function (e) {
+//         $('#joystick_btn_A').removeClass('active');
+//         send_m_key('A','keyup');
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
+//         e.preventDefault()
+//     });
+//     $('#joystick_btn_B').bind('touchstart gesturestart touchmove', function (e) {
+//         send_m_key('B','keydown');
+//         touchAB(e, false, 'B');
+//         e.preventDefault()
+//     });
+//     $('#joystick_btn_B').bind('touchend', function (e) {
+//         $('#joystick_btn_B').removeClass('active');
+//         send_m_key('B','keyup');
+//         nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
+//         e.preventDefault()
+//     });
+//     // $('#joystick_btn_AB').bind('touchstart gesturestart touchmove', function (e) {
+//     //     touchAB(e, false, 'AB');
+//     //     e.preventDefault()
+//     // });
+//     // $('#joystick_btn_AB').bind('touchend', function (e) {
+//     //     $('#joystick_btn_AB').removeClass('active');
+//     //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
+//     //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
+//     //     e.preventDefault()
+//     // });
+//     // $('#joystick_btn_X').bind('touchstart gesturestart touchmove', function (e) {
+//     //     touchAB(e, true, 'A');
+//     //     e.preventDefault()
+//     // });
+//     // $('#joystick_btn_X').bind('touchend', function (e) {
+//     //     $('#joystick_btn_X').removeClass('active');
+//     //     clearInterval(interval);
+//     //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
+//     //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
+//     //     e.preventDefault()
+//     // });
+//     // $('#joystick_btn_Y').bind('touchstart gesturestart touchmove', function (e) {
+//     //     touchAB(e, true, 'B');
+//     //     e.preventDefault()
+//     // });
+//     // $('#joystick_btn_Y').bind('touchend', function (e) {
+//     //     $('#joystick_btn_Y').removeClass('active');
+//     //     clearInterval(interval);
+//     //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_A}, player);
+//     //     nesButtonUp({keyCode: jsnes.Controller.BUTTON_B}, player);
+//     //     e.preventDefault()
+//     // })
+// }
+//
+// function touchControll(key, type) {
+//     var value = type == 'down' ? 0x41 : 0x40;
+//     var fvalue = type == 'down' ? 0x40 : 0x41;
+//     var key_type = type == 'down' ? 'keydown': 'keyup';
+//     send_m_key(key,key_type);
+//     switch (key) {
+//         case'left':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
+//             break;
+//         case'right':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
+//             break;
+//         case'up':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
+//             break;
+//         case'down':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
+//             break;
+//         case'leftup':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, fvalue);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, fvalue);
+//             break;
+//         case'rightup':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_UP, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, fvalue);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, fvalue);
+//             break;
+//         case'leftdown':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_UP, fvalue);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, fvalue);
+//             break;
+//         case'rightdown':
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_DOWN, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_RIGHT, value);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_UP, fvalue);
+//             nes.buttonValue(player, jsnes.Controller.BUTTON_LEFT, fvalue);
+//             break
+//     }
+// }
 
 var selfinterval;
 
@@ -956,7 +956,7 @@ function gamepadloop() {
 }
 
 let gamepadState = [];
-window.emulator.localController.btnKeyDown(key);
+// window.emulator.localController.btnKeyDown(key);
 function initgamepadState(gamepadIndex, gamepad) {
     var statuss = [];
     for (let i = 0; i < gamepad.buttons.length; i++) {
@@ -1187,19 +1187,3 @@ function initTableKey() {
 }
 
 
-function send_m_key(key_code ,type) {
-    var para = {
-        key_code: key_code,
-        room_id: room_id,
-        userid: userid,
-        username: username,
-        event: 'message',
-        type: type,
-    };
-    var data = {
-        0: 'message',
-        1: para,
-    };
-    var data_str = JSON.stringify(data);
-    ws.send(data_str);
-}

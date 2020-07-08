@@ -53,19 +53,19 @@ class NesController extends Controller
         }
         $userid = uniqid();
         $username = uniqid();
-        $room_str = 'game:room_' . $room_id;
-        $room_flag = Redis::exists($room_str);
-        if ($room_flag) {
-            $sRoomUserIds = Redis::get($room_str);
-            $aRoomUserIds = explode(',', $sRoomUserIds);
-            if (count($aRoomUserIds) > 1) {
-                dd('房间人满了');
-            } else {
-                Redis::set($room_str, $sRoomUserIds . ',' . $userid);
-            }
-        } else {
-            dd('房间不存在');
-        }
+//        $room_str = 'game:room_' . $room_id;
+//        $room_flag = Redis::exists($room_str);
+//        if ($room_flag) {
+//            $sRoomUserIds = Redis::get($room_str);
+//            $aRoomUserIds = explode(',', $sRoomUserIds);
+//            if (count($aRoomUserIds) > 1) {
+//                dd('房间人满了');
+//            } else {
+//                Redis::set($room_str, $sRoomUserIds . ',' . $userid);
+//            }
+//        } else {
+//            dd('房间不存在');
+//        }
 
         $ws_host = getWxDomain();
         $url = '';
