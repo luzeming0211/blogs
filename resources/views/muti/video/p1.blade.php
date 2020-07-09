@@ -20,6 +20,9 @@
     nes_load_url("nes-canvas", "{{ $nes->game }}");
     let stream = nes_canvas.captureStream();
     video.srcObject = stream;
+    document.getElementById("video_div").addEventListener("click", function () {
+        video.play();
+    });
 </script>
 </body>
 </html>
