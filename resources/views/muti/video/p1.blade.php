@@ -19,8 +19,14 @@
     var nes_canvas = document.getElementById('nes-canvas');
     nes_load_url("nes-canvas", "{{ $nes->game }}");
     let stream = nes_canvas.captureStream();
-    video.srcObject = stream;
+    try {
+        console.log('srcObject');
+        video.srcObject = stream;
+    } catch (err) {
+        alert(err);
+    }
     document.getElementById("video_div").addEventListener("click", function () {
+        alert(111);
         video.play();
     });
 </script>
