@@ -6,6 +6,7 @@
 //Route::get('/nes/p2','NesController@p2');
 
 
+Route::get('/video','NesController@video');
 Route::get('/nes/test','NesController@test2');
 Route::get('/nes','NesController@index');
 Route::get('/nes/{id}','NesController@detail');

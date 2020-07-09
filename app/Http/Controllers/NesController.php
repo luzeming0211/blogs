@@ -37,7 +37,7 @@ class NesController extends Controller
         $ws_host = getWxDomain();
 
         $show_page = 'muti.p1';
-        if (isMobile()){
+        if (isMobile()) {
             $show_page = 'muti.m.p1';
         }
 
@@ -70,24 +70,31 @@ class NesController extends Controller
         $ws_host = getWxDomain();
         $url = '';
         $show_page = 'muti.p2';
-        if (isMobile()){
+        if (isMobile()) {
             $show_page = 'muti.m.p2';
         }
-        return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host','url'));
+        return view($show_page, compact('userid', 'username', 'room_id', 'nes', 'ws_host', 'url'));
     }
 
 
     public function p1()
     {
         $ws_host = getWxDomain();
-        return view('muti.p1',compact('ws_host'));
+        return view('muti.p1', compact('ws_host'));
     }
 
     public function p2()
     {
         $ws_host = getWxDomain();
-        return view('muti.p2',compact('ws_host'));
+        return view('muti.p2', compact('ws_host'));
     }
 
+    public function video()
+    {
+        $id = 5;
+        $nes = DB::table('nes')->where('id', $id)->get()->first();
+        $nes->game = getFileUrl($nes->game);
+        return view('muti.video.p1',compact('nes'));
+    }
 
 }
