@@ -25,6 +25,11 @@
     } catch (err) {
         alert(err);
     }
+    try {
+        video.play();
+    } catch (err) {
+        alert(err);
+    }
     document.getElementById("video_div").addEventListener("click", function () {
         alert(111);
         video.play();
