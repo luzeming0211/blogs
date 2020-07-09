@@ -5,7 +5,7 @@
     <title>111</title>
     <script type="text/javascript" src="{{asset('assets/common')}}/js/jquery-3.0.0.min.js"></script>
     <script type="text/javascript" src="{{asset('assets/nes')}}/jsnes.min.js"></script>
-    <script type="text/javascript" src="{{asset('assets/nes')}}/nes-muti.js"></script>
+    <script src="{{asset('assets/nes')}}/m_p1.js"></script>
 </head>
 <body>
 <div style="margin: auto; width: 75%;">
