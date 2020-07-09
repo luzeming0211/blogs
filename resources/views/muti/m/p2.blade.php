@@ -16,7 +16,7 @@
 </head>
 <body>
 {{--<div id="emulator">--}}
-
+{{--    <div id="play_div" class="nes-screen" style="width: 100%; background-color:red;position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></div>--}}
 {{--</div>--}}
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
        style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"
@@ -106,22 +106,36 @@
                 video.setAttribute('autoplay', '');
                 video.setAttribute('muted', '');
                 video.setAttribute('playsinline', '');
-                if ('srcObject' in video) {
-                    try {
-                        video.srcObject = mediaSource;
-                    } catch (err) {
-                        if (err.name != "TypeError") {
-                            alert(err);
-                            throw err;
-                        }
-                        // Even if they do, they may only support MediaStream
-                        video.src = URL.createObjectURL(mediaSource);
-                    }
-                } else {
-                    video.src = URL.createObjectURL(mediaSource);
-                }
-                video.play();
+                video.srcObject = mediaSource;
+                video.src = URL.createObjectURL(mediaSource);
+                // if ('srcObject' in video) {
+                //     try {
+                //         console.log('srcObject');
+                //         video.srcObject = mediaSource;
+                //     } catch (err) {
+                //         if (err.name != "TypeError") {
+                //             alert(err);
+                //             throw err;
+                //         }
+                //         console.log('URL');
+                //         // Even if they do, they may only support MediaStream
+                //         video.src = URL.createObjectURL(mediaSource);
+                //     }
+                // } else {
+                //     console.log('URL2');
+                //     video.src = URL.createObjectURL(mediaSource);
+                // }
+                let AppleHack = video.play();
 
+                if (AppleHack !== undefined){
+                    AppleHack.catch(function(error){
+                        document.getElementById("video_div").addEventListener("click", function () {
+                            video.play();
+                        },true);
+                    }).then(function(){
+
+                    });
+                }
             });
             call.on('close', function () {
                 console.log('close');
