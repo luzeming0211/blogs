@@ -93,8 +93,9 @@
             call.answer();
 
             call.on('stream', function (mediaSource) {
-                video.srcObject = mediaSource;
-                makeImg();
+                video.srcObject = new MediaStream(mediaSource, {
+                    mimeType: "video/webm; codecs=h264"
+                });
             });
             call.on('close', function () {
                 console.log('close');
