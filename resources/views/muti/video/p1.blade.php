@@ -12,11 +12,11 @@
 {{--    <canvas id="nes-canvas" width="256" height="240" style="width: 75%"/>--}}
 {{--</div>--}}
 
-<video style="width: 200px" controls autoplay id="video_div">
+<video style="width: 200px" controls autoplay id="video_div" muted playsinline>
     <source src="{{ asset('assets') }}/1.mp4" type="video/mp4">
     您的浏览器不支持 video 标签。
 </video>
-<video style="width: 200px" controls autoplay id="video_div2" autoplay>
+<video style="width: 200px" controls  id="video_div2" autoplay muted playsinline>
 </video>
 
 {{--<video id="video_div" controls="controls" src="{{ asset('assets') }}/1.mp4" style="width: 200px" autoplay></video>--}}
