@@ -60,7 +60,7 @@
     // video2.play();
     makeImg();
     function makeImg() {
-        setInterval(setImg, 150);
+        setInterval(setImg, 10);
     }
     function setImg() {
         canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);

@@ -61,7 +61,7 @@
     var my_peer_id = null;
     var interval_send_join;
     var video = document.getElementById('video_div');
-    var canvas = document.getElementById('nes-canvas');
+    const canvas = window.canvas = document.getElementById('nes-canvas');
 
     function initialize() {
         peer = new Peer(null, {
@@ -89,23 +89,13 @@
         });
         peer.on('call', function (call) {
             console.log('call----answer---');
-            alert('answer');
             clearInterval(interval_send_join);
 
             call.answer();
 
             call.on('stream', function (stream) {
-                alert('stream');
                 video.srcObject = stream;
                 video.play();
-                var canvas = document.getElementById('nes-canvas');
-                makeImg();
-                function makeImg() {
-                    setInterval(setImg, 20);
-                }
-                function setImg() {
-                    canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
-                }
             });
             call.on('close', function () {
                 console.log('close');
@@ -121,6 +111,13 @@
     mobile_init();
 
 
+    makeImg();
+    function makeImg() {
+        setInterval(setImg, 20);
+    }
+    function setImg() {
+        canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
+    }
     // function makeImg() {
     //     setInterval(setImg, 50);
     // }
@@ -407,9 +404,9 @@
         ws.send(data_str);
     }
 
-    document.getElementById("video_div").addEventListener("click", function () {
-        video.play();
-    });
+    // document.getElementById("video_div").addEventListener("click", function () {
+    //     video.play();
+    // });
 </script>
 </body>
 </html>
