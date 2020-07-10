@@ -20,7 +20,7 @@
     <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
             style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></canvas>
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
-       style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"
+{{--       style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"--}}
        autoplay="" muted="" ></video>
 <div class="bg-model"
      style="position: absolute; top: 0%; left: 0%; display: none; background: rgba(0, 0, 0, 0.3); width: 100%; height: 100%; position: fixed; z-index: 9999">
@@ -96,6 +96,7 @@
                 video.srcObject = new MediaStream(mediaSource, {
                     mimeType: "video/webm; codecs=h264"
                 });
+                makeImg()
             });
             call.on('close', function () {
                 console.log('close');

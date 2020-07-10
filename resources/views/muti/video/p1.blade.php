@@ -11,14 +11,7 @@
 <div style="margin: auto; width: 75%;">
     <canvas id="nes-canvas" width="256" height="240" style="width: 75%"/>
 </div>
-<canvas id="nes-canvas2" width="256" height="240" style="width: 75%"/>
-{{--<video style="width: 200px"  autoplay id="video_div" muted playsinline>--}}
-{{--    <source src="{{ asset('assets') }}/1.mp4" type="video/mp4">--}}
-{{--    您的浏览器不支持 video 标签。--}}
-{{--</video>--}}
-{{--<video style="width: 200px"   id="video_div2" autoplay muted playsinline>--}}
-</video>
-<img src="" alt="" id="nesimg">
+<canvas id="nes-canvas2"  width="256" height="240"/>
 
 {{--<video id="video_div" controls="controls" src="{{ asset('assets') }}/1.mp4" style="width: 200px" autoplay></video>--}}
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
