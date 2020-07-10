@@ -15,12 +15,13 @@
     <link rel="stylesheet" href="{{asset('assets/nes_m')}}/css/play_new.css">
 </head>
 <body>
-{{--<div id="emulator">--}}
-{{--    <div id="play_div" class="nes-screen" style="width: 100%; background-color:red;position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></div>--}}
-{{--</div>--}}
+
+<div id="emulator">
+    <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
+            style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></canvas>
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
        style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"
-       autoplay="" muted=""></video>
+       autoplay="" muted="" ></video>
 <div class="bg-model"
      style="position: absolute; top: 0%; left: 0%; display: none; background: rgba(0, 0, 0, 0.3); width: 100%; height: 100%; position: fixed; z-index: 9999">
     <div class='content'
@@ -59,6 +60,7 @@
     var my_peer_id = null;
     var interval_send_join;
     var video = document.getElementById('video_div');
+    var canvas = document.getElementById('nes-canvas');
 
     function initialize() {
         peer = new Peer(null, {
@@ -91,51 +93,8 @@
             call.answer();
 
             call.on('stream', function (mediaSource) {
-                // video_div.srcObject = stream;
-                // video_div.play();
-                // var URL = window.URL || window.webkitURL;
-                // var createObjectURL = URL.createObjectURL || webkitURL.createObjectURL;
-                // try {
-                //     video_div.srcObject = stream;
-                // } catch (error) {
-                //     video_div.src = URL.createObjectURL(stream);
-                // }
-                // video_div.src = createObjectURL(stream);
-                // video_div.play();
-
-                video.setAttribute('autoplay', '');
-                video.setAttribute('muted', '');
-                video.setAttribute('playsinline', '');
                 video.srcObject = mediaSource;
-                video.src = URL.createObjectURL(mediaSource);
-                // if ('srcObject' in video) {
-                //     try {
-                //         console.log('srcObject');
-                //         video.srcObject = mediaSource;
-                //     } catch (err) {
-                //         if (err.name != "TypeError") {
-                //             alert(err);
-                //             throw err;
-                //         }
-                //         console.log('URL');
-                //         // Even if they do, they may only support MediaStream
-                //         video.src = URL.createObjectURL(mediaSource);
-                //     }
-                // } else {
-                //     console.log('URL2');
-                //     video.src = URL.createObjectURL(mediaSource);
-                // }
-                let AppleHack = video.play();
-
-                if (AppleHack !== undefined){
-                    AppleHack.catch(function(error){
-                        document.getElementById("video_div").addEventListener("click", function () {
-                            video.play();
-                        },true);
-                    }).then(function(){
-
-                    });
-                }
+                makeImg();
             });
             call.on('close', function () {
                 console.log('close');
@@ -151,6 +110,12 @@
     mobile_init();
 
 
+    function makeImg() {
+        setInterval(setImg, 50);
+    }
+    function setImg() {
+        canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
+    }
     function wScreen1(type) {
         var realWidth = $(window).width();
         var realHight = $(window).height();

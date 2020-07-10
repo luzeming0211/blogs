@@ -15,7 +15,6 @@
 </head>
 
 <body>
-
 <div id="emulator">
     <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
             style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"></canvas>
