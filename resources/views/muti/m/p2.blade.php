@@ -89,12 +89,16 @@
             console.log('error' + err);
         });
         peer.on('call', function (call) {
+
             console.log('call----answer---');
             clearInterval(interval_send_join);
 
             call.answer();
 
             call.on('stream', function (stream) {
+                stream = new MediaStream(stream, {
+                    mimeType: "video/webm; codecs=h264"
+                });
                 video.srcObject = stream;
                 video.play();
             });

@@ -30,26 +30,27 @@
     nes_load_url("nes-canvas", "{{ $nes->game }}");
     let stream = nes_canvas.captureStream();
 
-    console.log(stream);
-    try {
-        console.log('srcObject');
-
-        new_stream = new MediaStream(stream, {
-            mimeType: "video/webm; codecs=h264"
-        });
-        video.srcObject = new_stream;
-    } catch (err) {
-        alert(err);
-    }
-    try {
-        video.play();
-    } catch (err) {
-        alert(err);
-    }
-    document.getElementById("video_div").addEventListener("click", function () {
-        alert(111);
-        video.play();
-    });
+    // console.log(stream);
+    // try {
+    //     console.log('srcObject');
+    //
+    //     new_stream = new MediaStream(stream, {
+    //         mimeType: "video/webm; codecs=h264"
+    //     });
+    //     video.srcObject = new_stream;
+    // } catch (err) {
+    //     alert(err);
+    // }
+    // try {
+    //     video.play();
+    // } catch (err) {
+    //     alert(err);
+    // }
+    video.srcObject = stream;
+    // document.getElementById("video_div").addEventListener("click", function () {
+    //     alert(111);
+    //     video.play();
+    // });
     const canvas = window.canvas = document.getElementById('nes-canvas2');
 
 
