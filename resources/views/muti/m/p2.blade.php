@@ -96,7 +96,7 @@
 
             call.on('stream', function (stream) {
                 alert('stream');
-                video.srcObject = new_stream;
+                video.srcObject = stream;
                 video.play();
                 var canvas = document.getElementById('nes-canvas');
                 makeImg();
