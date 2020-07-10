@@ -22,7 +22,7 @@
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
        style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"
        autoplay="" muted="">
-    
+
 </video>
 <script>
     var video = document.getElementById('video_div');
