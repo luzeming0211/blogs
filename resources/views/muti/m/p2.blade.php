@@ -96,9 +96,6 @@
 
             call.on('stream', function (stream) {
                 alert('stream');
-                new_stream = new MediaStream(stream, {
-                    mimeType: "video/webm; codecs=h264"
-                });
                 video.srcObject = new_stream;
                 video.play();
                 var canvas = document.getElementById('nes-canvas');
