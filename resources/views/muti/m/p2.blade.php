@@ -20,9 +20,10 @@
     <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
             style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;z-index: 3000">
     </canvas>
+</div>
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
        style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"
-       autoplay="" muted="" ></video>
+       autoplay="" muted=""></video>
 <div class="bg-model"
      style="position: absolute; top: 0%; left: 0%; display: none; background: rgba(0, 0, 0, 0.3); width: 100%; height: 100%; position: fixed; z-index: 9999">
     <div class='content'
@@ -112,12 +113,15 @@
 
 
     makeImg();
+
     function makeImg() {
         setInterval(setImg, 20);
     }
+
     function setImg() {
         canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
     }
+
     // function makeImg() {
     //     setInterval(setImg, 50);
     // }
