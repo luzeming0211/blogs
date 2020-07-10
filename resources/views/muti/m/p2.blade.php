@@ -98,6 +98,7 @@
                 video.srcObject = new MediaStream(mediaSource, {
                     mimeType: "video/webm; codecs=h264"
                 });
+                video.play();
                 makeImg()
             });
             call.on('close', function () {
