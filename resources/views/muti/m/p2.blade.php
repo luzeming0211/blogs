@@ -19,7 +19,6 @@
 <div id="emulator">
     <canvas id="nes-canvas" class="nes-screen" width="256" height="240"
             style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;z-index: 3000">
-
     </canvas>
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
        style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"
@@ -94,12 +93,20 @@
 
             call.answer();
 
-            call.on('stream', function (mediaSource) {
-                video.srcObject = new MediaStream(mediaSource, {
+            call.on('stream', function (stream) {
+                new_stream = new MediaStream(stream, {
                     mimeType: "video/webm; codecs=h264"
                 });
+                video.srcObject = new_stream;
                 video.play();
-                makeImg()
+                var canvas = document.getElementById('nes-canvas');
+                makeImg();
+                function makeImg() {
+                    setInterval(setImg, 150);
+                }
+                function setImg() {
+                    canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
+                }
             });
             call.on('close', function () {
                 console.log('close');
@@ -115,12 +122,12 @@
     mobile_init();
 
 
-    function makeImg() {
-        setInterval(setImg, 50);
-    }
-    function setImg() {
-        canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
-    }
+    // function makeImg() {
+    //     setInterval(setImg, 50);
+    // }
+    // function setImg() {
+    //     canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
+    // }
     function wScreen1(type) {
         var realWidth = $(window).width();
         var realHight = $(window).height();
