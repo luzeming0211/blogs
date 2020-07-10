@@ -9,14 +9,21 @@
 </head>
 <body>
 <div style="margin: auto; width: 75%;">
-    <canvas id="nes-canvas" width="256" height="240" style="width: 75%"/>
+    <canvas id="nes-canvas" width="256" height="240" style="width: 75%"></canvas>
 </div>
-<canvas id="nes-canvas2"  width="256" height="240"/>
-
+<canvas id="nes-canvas2"  width="256" height="240"></canvas>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 {{--<video id="video_div" controls="controls" src="{{ asset('assets') }}/1.mp4" style="width: 200px" autoplay></video>--}}
 <video id="video_div" playsinline="" class="nes-screen" width="256" height="240"
        style="width: 100%; position: absolute; image-rendering: pixelated; image-rendering: optimizespeed;"
-       autoplay="" muted=""></video>
+       autoplay="" muted="">
+    
+</video>
 <script>
     var video = document.getElementById('video_div');
     var nes_canvas = document.getElementById('nes-canvas');
