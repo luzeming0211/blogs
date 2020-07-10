@@ -102,7 +102,7 @@
                 var canvas = document.getElementById('nes-canvas');
                 makeImg();
                 function makeImg() {
-                    setInterval(setImg, 150);
+                    setInterval(setImg, 20);
                 }
                 function setImg() {
                     canvas.getContext('2d').drawImage(video, 0, 0, 256, 240);
