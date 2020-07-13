@@ -1,5 +1,5 @@
 <?php
-
+Route::get('/audio','HomeController@audio');
 Route::get('/video/p1','VideoController@p1');
 //Route::get('/nes/p1','NesController@p1');
 Route::get('/video/p2','VideoController@p2');
